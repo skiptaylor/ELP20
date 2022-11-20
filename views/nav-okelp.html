@@ -1,0 +1,42 @@
+<% unless session[:user] %>
+<li class="<%= active 'home' %>"><a href="/home">Home</a></li>
+<li class="dropdown <%= active ['personnel', 'training', 'publications'] %>">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">What we do <b class="caret"></b></a>
+	<ul class="dropdown-menu">					                	
+    	<li class="<%= active 'personnel' %>"><a href="/personnel">Personnel Services</a></li>
+    	<li class="<%= active 'training' %>"><a href="/training">Training Services</a></li>
+    	<li class="<%= active 'publications' %>"><a href="/publications">Publications</a></li>
+   </ul>
+</li>
+<li class="dropdown <%= active ['corporate', 'elp', 'gsa','partners', 'careers', 'contact'] %>">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Corporate <b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li class="<%= active 'corporate' %>"><a href="/corporate" <%= active 'corporate' %>>Corporate Team</a></li>
+		<li class="<%= active 'elp' %>"><a href="/elp">eduCONNECT&trade; Program</a></li>
+		<li class="<%= active 'gsa' %>"><a href="/gsa">GSA Contract Information</a></li>
+		<li class="<%= active 'partners' %>"><a href="/partners">Partners</a></li>
+		<li class="<%= active 'careers' %>"><a href="/careers">Careers</a></li>
+		<li class="<%= active 'contact' %>"><a href="/contact">Contact Us</a></li>
+	</ul>
+</li>
+<% end %>
+  
+<% if session[:user] %>
+<li class="dropdown <%= active ['reports','profile'] %>">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Activities <b class="caret"></b></a>
+		<ul class="dropdown-menu">
+			<li class="<%= active 'reports' %>"><a href="/users/<%= session[:user] %>/reports">Activities Report</a></li>
+			<li class="<%= active 'profile' %>"><a href="/profile">Profile</a></li>
+		</ul>
+</li>
+<% end %>
+<% if session[:admin] || session[:ngb_customer] || session[:regional] || session[:state_customer] %>
+<li class="<%= active 'users' %>"><a href="/users">Admin</a></li>
+<% end %>
+<li>
+	<% unless session[:user] %>
+		<a href="/sign-in">Sign in</a>
+	<% else %>
+		<a href="/sign-out">Sign out</a>
+	<% end %>
+</li>

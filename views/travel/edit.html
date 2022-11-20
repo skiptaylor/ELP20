@@ -1,0 +1,697 @@
+<div class="row">
+	<div class="span12">
+		<a href="/travel" class="btn btn-success pull-right">Reports List</a>
+		<h1>
+		  Travel Authorization and Reimbursement
+		  <small></small>
+		 </h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+
+<hr style="margin-bottom: 0px;" />
+
+		<form method="post" class="expenseReport">
+
+		<p style="font-size: .8em; color: charcoal;"><%= @expense_report.user.display_name unless @expense_report.user_id.nil? %><span class="pull-right">Travel Number <%= @expense_report.id %></span></p>
+		<p class="pull-right"><small>Status &nbsp; </small><span class="badge badge-inverse"><%= @expense_report.status %></span></p>
+	  <p>
+	    <label class="checkbox">
+	      <input name="non_approved_trip" id="non_approved_trip" type="checkbox" <%= 'checked' if @expense_report.non_approved_trip %> /> <strong>Non-forecasted Travel</strong>
+	    </label>
+	  </p>
+		
+	</div>
+</div>
+
+<!-- Hides with css so it works when not displayed -->
+
+<div class="hide">
+	<%= date_to_field('start_date', (@expense_report.start_date || Time.now)) %>
+	<%= date_to_field('end_date', (@expense_report.end_date || Time.now)) %>
+	<%= @expense_report.total_travel_days %> 
+	<input type="text" class="textfield span6" name="origin" id="origin" value="<%= @expense_report.origin %>" />
+	<input type="text" class="textfield span6" name="destination" id="destination" value="<%= @expense_report.destination %>" /> 
+	<input type="text" class="textarea span12" name="reason_for_travel" id="reason_for_travel" value="<%= @expense_report.reason_for_travel %>" />
+	<input type="text" class="textfield input-small dec" name="est_hotel" id="est_hotel" value="<%= truncate_number(@expense_report.est_hotel) %>" />
+	<input type="text" class="textfield input-small dec" name="est_meals_and_misc" id="est_meals_and_misc" value="<%= truncate_number(@expense_report.est_meals_and_misc) %>" />
+	<%= dollarize(@expense_report.est_rate_per_day) %>
+	<%= dollarize(@expense_report.est_trip_per_diem) %>
+  <label class="checkbox">
+    <input type="checkbox" name="est_gsa_car" id="est_gsa_car" <%= 'checked="checked"' if @expense_report.est_gsa_car  %> />
+    <strong>GSA Car</strong>
+  </label>
+	<input type="text" class="textfield input-small dec" name="est_mileage" id="est_mileage" value="<%= (@expense_report.est_mileage) %>" /> 
+	<input type="text" class="textfield input-small dec" name="est_transit" id="est_transit" value="<%= truncate_number(@expense_report.est_transit) %>" /> 
+	<input type="text" class="textfield input-small dec" name="est_airline_ticket" id="est_airline_ticket" value="<%= truncate_number(@expense_report.est_airline_ticket) %>" /> 
+	<input type="text" class="textfield input-small dec" name="est_parking" id="est_parking" value="<%= truncate_number(@expense_report.est_parking) %>" /> 
+	<input type="text" class="textfield input-small dec" name="est_car_rental" id="est_car_rental" value="<%= truncate_number(@expense_report.est_car_rental) %>" /> 
+	<input type="text" class="textfield input-small dec" name="est_misc" id="est_misc" value="<%= truncate_number(@expense_report.est_misc) %>" /> 
+	<span class="totals"><%= truncate_number(@expense_report.total_estimated_cost) %></span>
+	  <label class="checkbox">
+	    <input type="checkbox" name="gsa_car" id="gsa_car" <%= 'checked="checked"' if @expense_report.gsa_car  %> />
+	    <strong>GSA Car</strong>
+	  </label>
+		<input type="text" class="textfield input-small dec" name="hotel" id="hotel" value="<%= truncate_number(@expense_report.hotel) %>" /> 
+		<input type="text" class="textfield input-small dec" dec name="meals_and_misc" id="meals_and_misc" value="<%= truncate_number(@expense_report.meals_and_misc) %>" /> 
+		<input type="text" class="textfield input-small dec" name="transit" id="transit" value="<%= truncate_number(@expense_report.transit) %>" /> 
+		<input type="text" class="textfield input-small dec" name="airline_ticket" id="airline_ticket" value="<%= truncate_number(@expense_report.airline_ticket) %>" /> 
+		<input type="text" class="textfield input-small dec" name="parking" id="parking" value="<%= truncate_number(@expense_report.parking) %>" /> 
+		<input type="text" class="textfield input-small dec" name="car_rental" id="car_rental" value="<%= truncate_number(@expense_report.car_rental) %>" /> 
+		<input type="text" class="textfield input-small dec" name="misc" id="misc" value="<%= truncate_number(@expense_report.misc) %>" /> 
+		<span class="totals"><%= truncate_number(@expense_report.due_employee) %></span> 
+		<span class="totals"><%= truncate_number(@expense_report.ctc_prepaid) %></span>
+		<span class="totals"><%= truncate_number(@expense_report.total_cost_of_trip) %></span> 
+		<input type="text" class="textfield input-small dec" name="cash_advance" id="cash_advance" value="<%= truncate_number(@expense_report.cash_advance) %>" /> 
+		<span class="totals"><%= truncate_number(@expense_report.variance) %></span>
+		<label class="horz" for="total_reembursement_due">Reimbursement Due</label>
+		<span class="totals"><%= truncate_number(@expense_report.total_reembursement_due) %></span>
+		<textarea type="text" rows="4" class="span6" name="comments" id="comments"><%= @expense_report.comments %></textarea>
+	   <table class="table table-hover">
+	     <tr>
+			  <td><label for="trips_travel_date">Travel Date</label></td>
+			  <td><label for="trips_reason_for_travel">Reason for Travel</label></td>
+			  <td><label for="trips_departure_address">Departure Address</label></td>
+			  <td><label for="trips_arrival_address">Arrival Address</label></td>
+			  <td><label for="trips_miles">Miles</label></td>
+		  </tr>
+	 
+  			 <% i = 0 %>
+  		    <% @expense_report.trips.each do |trip| %>
+  		      <%= erb :'travel/trip', layout: false, locals: { trip: trip, i: i } %>
+  		      <% i = i + 1 %>
+  		    <% end %>
+    
+  		    <% (5 - @expense_report.trips.count).times do |trip| %>
+  		      <%= erb :'travel/trip', layout: false, locals: { trip: Trip.new, i: i } %>
+  		      <% i = i + 1 %>
+  		    <% end %>
+			 
+	    </table>
+		 
+			<label class="short" for="commuter_mileage">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="See 'Reimbursement Clarifications' and 'Commuter Mileage Examples' Below">Commuter Mileage</a>
+			</label>
+			<input type="text" class="textfield input-small" name="commuter_mileage" id="commuter_mileage" value="<%= @expense_report.commuter_mileage %>" />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total POV Mileage - <strong><%= @expense_report.total_pov_mileage %></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Difference - <strong><%= @expense_report.mileage_difference %></strong>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mileage Reimbursement - <strong><%= truncate_dollar(@expense_report.mileage_reimbursement) %></strong>
+			<small><strong>Reimbursement Check Number:</strong> &nbsp; <input type="text" class="textfield input-small" name="check_number" id="check_number" value="<%= @expense_report.check_number %>"></span> &nbsp; <strong>Reimbursement Date:</strong> &nbsp; <%= date_to_field('check_date', (@expense_report.check_date || Time.now)) %></small>
+			
+		 
+		<p class="span5">
+			<label class="short" for="status">Status</label>
+			<select name="status" id="status" class="span4">
+				<option value="New" <%= 'selected' if @expense_report.status == 'New' %>>New</option>
+				<option value="PM RFI" <%= 'selected' if @expense_report.status == 'PM RFI' %>>PM RFI</option>
+				<option value="NGB Approved" <%= 'selected' if @expense_report.status == 'NGB Approved' %>>NGB Approved</option>
+				<option value="NGB RFI" <%= 'selected' if @expense_report.status == 'NGB RFI' %>>NGB RFI</option>
+				<option value="Non-forecasted" <%= 'selected' if @expense_report.status == 'Non-forecasted' %>>Non-forecasted Travel</option>
+				<option value="Reimbursement Requested" <%= 'selected' if @expense_report.status == 'Reimbursement Requested' %>>Reimbursement Requested</option>
+				<option value="Reimbursement Complete" <%= 'selected' if @expense_report.status == 'Reimbursement Complete' %>>Reimbursement Complete</option>
+				<option value="Invoiced" <%= 'selected' if @expense_report.status == 'Invoiced' %>>Invoiced</option>
+				<option value="Cancelled" <%= 'selected' if @expense_report.status == 'Cancelled' %>>Cancelled</option>
+			</select>
+		</p>
+	 
+</div>
+
+<!-- Static data display after NGN Approval -->
+
+<% if @expense_report.status == 'NGB Approved' || @expense_report.status == 'Reimbursement Requested' || @expense_report.status == 'Reimbursement Complete' || @expense_report.status == 'Cancelled' || @expense_report.status == 'Non-forecasted' || @expense_report.status == 'Invoiced' %>
+<div class="row">
+	<div class="span12">
+		
+		<table class="table table-striped table-bordered">
+			<tr style="font-size: .9em;">
+				<th>Travel Start Date</th>
+				<th>Travel End Date</th>
+				<th>Total Travel Days</th>
+			</tr>
+			<tr>
+				<td><%= format_day(@expense_report.start_date) %></td>
+				<td><%= format_day(@expense_report.end_date) %></td>
+				<td><%= @expense_report.total_travel_days %></td>
+			</tr>
+
+			<tr style="font-size: .9em;">
+				<th>Origin <small>City, State</small></th>
+				<th>Destination <small>City, State</small></th>
+				<th>Reason for Travel</th>
+			</tr>
+			<tr>
+				<td><%= @expense_report.origin %></td>
+				<td><%= @expense_report.destination %></td>
+				<td><%= @expense_report.reason_for_travel %></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="span12">	
+		<hr class="thick" />
+		<h2 class="bree">Pre-travel Authorization</h2>
+
+		<table class="table table-striped table-bordered">
+			<tr style="font-size: .9em;">
+				<th>Hotel Per Diem</th>
+				<th>Meals and Incidental</th>
+				<th>Rates per day</th>
+				<th>Total trip per diem</th>
+			</tr>
+			<tr>
+				<td style="text-align: center;"><%= truncate_number(@expense_report.est_hotel) %></td>
+				<td style="text-align: center;"><%= truncate_number(@expense_report.est_meals_and_misc) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_rate_per_day) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_trip_per_diem) %></td>
+			</tr>
+		</table>
+	</div>
+	<div class="span12">
+		<h4>Estimate of additional cost</h4>
+		
+		<table class="table table-striped table-bordered">
+			<tr style="font-size: .9em;">
+				<th>GSA Car</th>
+				<th>Projected Miles</th>
+				<th>Taxi/Transit</th>
+				<th>Airline Ticket</th>
+				<th>Parking</th>
+				<th>Car Rental</th>
+				<th>Misc.</th>
+				<th>Total </th>
+			</tr>
+			<tr>
+				<td><label class="checkbox"><input type="checkbox" name="est_gsa_car" id="est_gsa_car" <%= 'checked="checked"' if @expense_report.est_gsa_car  %> /><strong>GSA Car</strong></label></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_mileage) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_transit) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_airline_ticket) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_parking) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_car_rental) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.est_misc) %></td>
+				<th style="text-align: center;"><%= truncate_dollar(@expense_report.total_estimated_cost) %></th>
+			</tr>
+		</table>
+				
+
+	
+	</div>
+
+</div>
+
+<!-- Editable data before NGB Approval -->
+
+<% else %>
+<div class="row">
+	<div class="span12">
+		<div class="row">
+			
+			<p class="span4">
+				<label for="start_date">Travel Start Date</label>
+				<%= date_to_field('start_date', (@expense_report.start_date || Time.now)) %> 
+			</p>
+			<p class="span4">
+				<label for="end_date">Travel End Date</label>
+				<%= date_to_field('end_date', (@expense_report.end_date || Time.now)) %> 
+			</p>
+
+			<p class="span3 well well-small" style="text-align: center; margin-top: 12px;">
+				<label class="short" for="end_date"> &nbsp; &nbsp; Total Travel Days</label>
+				<span class="badge badge-inverse"><%= @expense_report.total_travel_days %></span>
+			</p>
+		</div>
+	</div>
+
+	<div class="span12">
+		<div class="row">
+			<p class="span6">
+				<label for="origin">Origin <small>City, State</small></label>
+				<input type="text" class="textfield span6" name="origin" id="origin" value="<%= @expense_report.origin %>" /> 
+			</p>
+			<p class="span6">
+				<label for="destination">Destination <small>City, State</small></label>
+				<input type="text" class="textfield span6" name="destination" id="destination" value="<%= @expense_report.destination %>" /> 
+			</p>
+		</div>
+		<p style="margin-bottom: 32px;">
+			<label for="reason_for_travel">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Be as brief and precise as possible">Reason for Travel</a>
+			</label>
+			<input type="text" class="textarea span12" name="reason_for_travel" id="reason_for_travel" value="<%= @expense_report.reason_for_travel %>" /> 
+		</p>
+		<hr class="thick" />
+		<h2 class="bree">Pre-travel Authorization</h2>
+	</div>
+	<div class="span6">
+		<div class="row">	
+			<div class="well span5">
+				<p>
+					<a href="http://www.defensetravel.dod.mil/site/perdiemCalc.cfm" target="_blank" class="btn btn-small btn-info">Per Diem Rates</a> &nbsp; <small>Get Authorized Per Diem Rates</small><br />
+					<br />
+				</p>
+		
+				<p>
+					<label class="horz" for="est_hotel">
+						<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="Enter rate per day">Hotel</a>
+					</label>
+					<input type="text" class="textfield input-small dec" name="est_hotel" id="est_hotel" value="<%= truncate_number(@expense_report.est_hotel) %>" /> 
+				</p>
+				<p>
+					<label class="horz" for="est_meals_and_misc">
+						<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="Enter cost per day">Meals and Incidental</a>
+					</label>
+					<input type="text" class="textfield input-small dec" name="est_meals_and_misc" id="est_meals_and_misc" value="<%= truncate_number(@expense_report.est_meals_and_misc) %>" /> 
+				</p>
+				<p>
+					<label class="horz" for="est_meals_and_misc">Rates per day</label>
+					<span class="totals text-right"><%= truncate_dollar(@expense_report.est_rate_per_day) %></span>
+				</p>
+				<p>
+					<label class="horz" for="est_trip_per_diem">Total trip per diem</label>
+					<span class="totals"><%= truncate_dollar(@expense_report.est_trip_per_diem) %></span>
+				</p>
+				<small>See <strong>Reimbursement Clarifications</strong> below</small>
+			</div>
+					
+		</div>
+	</div>
+
+	<div class="span5">
+		<h4>Estimate of additional cost</h4>
+		<p style="padding-left: 192px;">
+		  <label class="checkbox">
+		    <input type="checkbox" name="est_gsa_car" id="est_gsa_car" <%= 'checked="checked"' if @expense_report.est_gsa_car  %> />
+		    <strong>GSA Car</strong>
+		  </label>
+		</p>
+		<p>
+			<label class="horz" for="est_mileage">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="Enter projected miles and not cost. Get accurate mileage with icon to the right.">Projected Miles</a>
+			</label>
+			<input type="text" class="textfield input-small dec" name="est_mileage" id="est_mileage" value="<%= truncate_number(@expense_report.est_mileage) %>" /> &nbsp; <a href="https://maps.google.com" target="_blank" class="btn btn-info"><i class="icon-road icon-large"></i> </a>
+		</p>
+		<p>
+			<label class="horz" for="est_transit">Taxi/Transit</label>
+			<input type="text" class="textfield input-small dec" name="est_transit" id="est_transit" value="<%= truncate_number(@expense_report.est_transit) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="est_airline_ticket">Airline Ticket Cost</label>
+			<input type="text" class="textfield input-small dec" name="est_airline_ticket" id="est_airline_ticket" value="<%= truncate_number(@expense_report.est_airline_ticket) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="est_parking">Parking Cost</label>
+			<input type="text" class="textfield input-small dec" name="est_parking" id="est_parking" value="<%= truncate_number(@expense_report.est_parking) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="est_car_rental">Car Rental Cost</label>
+			<input type="text" class="textfield input-small dec" name="est_car_rental" id="est_car_rental" value="<%= truncate_number(@expense_report.est_car_rental) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="est_misc">Misc. Cost</label>
+			<input type="text" class="textfield input-small dec" name="est_misc" id="est_misc" value="<%= truncate_number(@expense_report.est_misc) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="@total_estimated_cost">Total estimated cost </label>
+			<span class="totals"><%= truncate_dollar(@expense_report.total_estimated_cost) %></span>
+		</p>
+	
+	</div>
+	<div class="span12">
+
+		<input type="submit" value="Save" class="btn btn-success" />
+
+	</div>
+</div>
+	<% end %>
+	
+<!-- Static data display after Reimbursement Requested -->
+	
+<hr class="thick" />
+<% if @expense_report.status == 'Cancelled' || @expense_report.status == 'Reimbursement Complete' || @expense_report.status == 'Invoiced' || @expense_report.status == 'Reimbursement Requested' %>
+<div class="row">
+	<div class="span12">
+
+		<p class="pull-right"><small>Status &nbsp; </small><span class="badge badge-inverse"><%= @expense_report.status %></span></p><h2 class="bree">Post-Travel Reimbursement</h2>
+    
+	</div>
+	<div class="span12">
+	   <table class="table table-condensed table-bordered">
+	     <tr>
+			  <td><label>Travel Date</label></td>
+			  <td><label>Reason for Travel</label></td>
+			  <td><label>Departure Address</label></td>
+			  <td><label>Arrival Address</label></td>
+			  <td><label>Miles</label></td>
+		  </tr>
+	 
+  			 <% i = 0 %>
+  		    <% @expense_report.trips.each do |trip| %>
+  		      <%= erb :'travel/trip_static', layout: false, locals: { trip: trip, i: i } %>
+  		      <% i = i + 1 %>
+  		    <% end %>
+    
+  		    <% (5 - @expense_report.trips.count).times do |trip| %>
+  		      <%= erb :'travel/trip_static', layout: false, locals: { trip: Trip.new, i: i } %>
+  		      <% i = i + 1 %>
+  		    <% end %>
+			 
+	    </table>
+	  </div>
+  <div class="span12">
+  	<div class="well well-small" style="display: block; padding-bottom: 18px;">	
+		Commuter Mileage - <strong><%= @expense_report.commuter_mileage %></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total POV Mileage - <strong><%= @expense_report.total_pov_mileage %></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Difference - <strong><%= @expense_report.mileage_difference %></strong>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mileage Reimbursement - <strong><%= truncate_dollar(@expense_report.mileage_reimbursement) %></strong>
+		
+	</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="span12">
+		<table class="table table-striped table-bordered">
+			<tr style="font-size: .9em;">
+				<th>GSA Car</th>
+				<th>Hotel</th>
+				<th>Meals</th>
+				<th>Taxi/Transit</th>
+				<th>Airline Ticket</th>
+				<th>Parking</th>
+				<th>Car Rental</th>
+			</tr>
+			<tr>
+				<td><label class="checkbox"><input type="checkbox" name="est_gsa_car" id="est_gsa_car" <%= 'checked="checked"' if @expense_report.est_gsa_car  %> /><strong>GSA Car</strong></label></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.hotel) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.meals_and_misc) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.transit) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.airline_ticket) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.parking) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.car_rental) %></td>
+			</tr>
+			<tr style="font-size: .9em;">
+				<th>Misc.</th>
+				<th>Due Employee</th>
+				<th>CTC Pre-paid</th>
+				<th>Total Cost of Trip</th>
+				<th>Cash Advance</th>
+				<th>Reimbursement Due</th>
+				<th>Cost Variance</th>
+			</tr>
+			<tr>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.misc) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.due_employee) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.ctc_prepaid) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.total_cost_of_trip) %></td>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.cash_advance) %></td>
+				<th style="text-align: center;"><%= truncate_dollar(@expense_report.total_reembursement_due) %></th>
+				<td style="text-align: center;"><%= truncate_dollar(@expense_report.variance) %></td>
+			</tr>
+			<tr style="font-size: .9em;">
+				<th colspan="8">Description</th>
+			</tr>
+			<tr>	
+				<td colspan="8"><%= @expense_report.comments %></td>
+			</tr>
+		</table>
+	</div>
+  
+
+</div>
+
+<!-- Editable data before Reimbursement Requested -->
+
+  <% else %>
+  
+  <div class="row">
+  	<div class="span12">
+
+  		<p class="pull-right"><small>Status &nbsp; </small><span class="badge badge-inverse"><%= @expense_report.status %></span></p><h2 class="bree">Post-Travel Reimbursement</h2>
+	</div>
+	<div class="span12">
+	   <table class="table table-hover">
+	     <tr>
+			  <td><label for="trips_<%= i %>_travel_date">Travel Date</label></td>
+			  <td><label for="trips_<%= i %>_reason_for_travel">Reason for Travel</label></td>
+			  <td><label for="trips_<%= i %>_departure_address">Departure Address</label></td>
+			  <td><label for="trips_<%= i %>_arrival_address">Arrival Address</label></td>
+			  <td><a href="https://maps.google.com" target="_blank" class="btn btn-info btn-small"><i class="icon-road"></i> </a></td>
+		  </tr>
+	 
+  			 <% i = 0 %>
+  		    <% @expense_report.trips.each do |trip| %>
+  		      <%= erb :'travel/trip', layout: false, locals: { trip: trip, i: i } %>
+  		      <% i = i + 1 %>
+  		    <% end %>
+    
+  		    <% (5 - @expense_report.trips.count).times do |trip| %>
+  		      <%= erb :'travel/trip', layout: false, locals: { trip: Trip.new, i: i } %>
+  		      <% i = i + 1 %>
+  		    <% end %>
+			 
+	    </table>
+	  </div>
+
+    <div class="span12">
+    	<div class="well well-small" style="display: block; padding-bottom: 9px;">	
+
+  			<label class="short" for="commuter_mileage">
+  				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="See 'Reimbursement Clarifications' and 'Commuter Mileage Examples' Below">Commuter Mileage</a>
+  			</label>
+  			<input type="text" class="textfield input-small" name="commuter_mileage" id="commuter_mileage" value="<%= @expense_report.commuter_mileage %>" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total POV Mileage - <strong><%= @expense_report.total_pov_mileage %></strong>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Difference - <strong><%= @expense_report.mileage_difference %></strong>
+  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mileage Reimbursement - <strong><%= truncate_dollar(@expense_report.mileage_reimbursement) %></strong>
+
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span6">
+		<p style="padding-left: 192px;">
+		  <label class="checkbox">
+		    <input type="checkbox" name="gsa_car" id="gsa_car" <%= 'checked="checked"' if @expense_report.gsa_car  %> />
+		    <strong>GSA Car</strong>
+		  </label>
+		</p>
+		<p>
+			<label class="horz" for="hotel">Hotel<span class="text-info">*</span></label>
+			<input type="text" class="textfield input-small dec" name="hotel" id="hotel" value="<%= truncate_number(@expense_report.hotel) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="meals_and_misc">Meals</label>
+			<input type="text" class="textfield input-small dec" name="meals_and_misc" id="meals_and_misc" value="<%= truncate_number(@expense_report.meals_and_misc) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="transit">Taxi/Transit<span class="text-info">*</span></label>
+			<input type="text" class="textfield input-small dec" name="transit" id="transit" value="<%= truncate_number(@expense_report.transit) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="airline_ticket">Airline Ticket<span class="text-info">*</span></label>
+			<input type="text" class="textfield input-small dec" name="airline_ticket" id="airline_ticket" value="<%= truncate_number(@expense_report.airline_ticket) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="parking">Parking<span class="text-info">*</span></label>
+			<input type="text" class="textfield input-small dec" name="parking" id="parking" value="<%= truncate_number(@expense_report.parking) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="car_rental">Car Rental<span class="text-info">*</span></label>
+			<input type="text" class="textfield input-small dec" name="car_rental" id="car_rental" value="<%= truncate_number(@expense_report.car_rental) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="misc">Misc.<span class="text-info">*</span></label>
+			<input type="text" class="textfield input-small dec" name="misc" id="misc" value="<%= truncate_number(@expense_report.misc) %>" /> 
+		</p>
+		<p class="span4 offset1"><span class="text-info">*</small><small>Send receipts to <a href="mailto:plo@careertrain.com">plo@careertrain.com</a></small></p>
+
+	</div>
+	<div class="span6">
+		<p>
+			<label class="horz" for="due_employee">Due Employee</label>
+			<span class="totals"><%= truncate_dollar(@expense_report.due_employee) %></span> 
+		</p>
+		<p>
+			<label class="horz" for="ctc_prepaid">CTC Pre-paid</label>
+			<span class="totals"><%= truncate_dollar(@expense_report.ctc_prepaid) %></span>
+		</p><p>
+			<label class="horz" for="total_cost_of_trip">Total Cost of Trip</label>
+			<span class="totals"><%= truncate_dollar(@expense_report.total_cost_of_trip) %></span> 
+		</p>
+		<p>
+			<label class="horz" for="cash_advance">Cash Advance</label>
+			<input type="text" class="textfield input-small dec" name="cash_advance" id="cash_advance" value="<%= truncate_number(@expense_report.cash_advance) %>" /> 
+		</p>
+		<p>
+			<label class="horz" for="status">Cost Variance</label>
+			<span class="totals"><%= truncate_dollar(@expense_report.variance) %></span>
+		</p>
+		<p>
+			<label class="horz" for="total_reembursement_due">Reimbursement Due</label>
+			<span class="totals"><%= truncate_dollar(@expense_report.total_reembursement_due) %></span>
+		</p>
+		<p>
+			
+			<label for="comments">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="Description of Other or Misc. expenses or comments">Description</a>
+			</label>
+			
+			<textarea type="text" rows="4" class="span6" name="comments" id="comments"><%= @expense_report.comments %></textarea>
+		</p>
+			
+	</div>
+	<div class="span2">
+		<p><input type="submit" value="Save" class="btn btn-success" /></p>
+	</div>
+</div>
+
+<% end %>
+
+<!-- For Per Diem variance alert -->
+
+<div class="row">
+	<div class="span12">
+		
+		<% unless @expense_report.non_approved_trip %>
+		<hr />
+		<div style="text-align: center;">
+			<h5><%= @expense_report.per_diem_reembursement_explanation unless @expense_report.non_approved_trip %></h5>
+			<p><small>CTC must follow the government per diem rates when reimbursing you for meals and hotel expenses. <br />This message indicates whether your actual costs are within the total per diem.</small></p>
+		</div>
+		<% end %>
+		
+	</div>
+		
+	<div class="span12">
+		
+		<% if @expense_report.status == 'NGB Approved' || @expense_report.status == 'Non-forecasted' %>
+		<hr />
+		<div class="span6" style="padding-top: 16px;">Once trip is completed and you are ready for reimbursement check the option to the right and submit. Please reference <strong>travel number <%= @expense_report.id %></strong> with receipts.</div>
+				
+		<div class="span5">
+			<div class="sign-in spaced" style="width: 380px;">
+			<input type="submit" value="Submit" class="btn btn-success pull-right" />
+			<label class="checkbox">
+	    		<input type="checkbox" name="submit_for_reimbursement" id="submit_for_reimbursement" style="font-size: 20px;" />
+	    		<h5 class="text-error"> &nbsp;Submit for reimbursement</h5>
+	  		</label>
+			</div>
+  		</div>
+		<% end %>
+	</div>
+
+<!-- For admin use only -->
+
+	<% if session[:admin] %>
+	<div class="span12">
+		<hr class="thick" />
+		<div class="row">
+
+			<p class="span5">
+				<label class="short" for="status">Status</label>
+				<select name="status" id="status" class="span3">
+					<option value="New" <%= 'selected' if @expense_report.status == 'New' %>>New</option>
+					<option value="PM RFI" <%= 'selected' if @expense_report.status == 'PM RFI' %>>PM RFI</option>
+					<option value="NGB Approved" <%= 'selected' if @expense_report.status == 'NGB Approved' %>>NGB Approved</option>
+					<option value="NGB RFI" <%= 'selected' if @expense_report.status == 'NGB RFI' %>>NGB RFI</option>
+					<option value="Non-forecasted" <%= 'selected' if @expense_report.status == 'Non-forecasted' %>>Non-forecasted Travel</option>
+					<option value="Reimbursement Requested" <%= 'selected' if @expense_report.status == 'Reimbursement Requested' %>>Reimbursement Requested</option>
+					<option value="Reimbursement Complete" <%= 'selected' if @expense_report.status == 'Reimbursement Complete' %>>Reimbursement Complete</option>
+					<option value="Invoiced" <%= 'selected' if @expense_report.status == 'Invoiced' %>>Invoiced</option>
+					<option value="Cancelled" <%= 'selected' if @expense_report.status == 'Cancelled' %>>Cancelled</option>
+				</select>
+				<input type="submit" value="Save" class="btn btn-success" />
+			</p>
+			<p class="span3">
+				<% if @expense_report.status == 'NGB Approved' || @expense_report.status == 'Reimbursement Requested' || @expense_report.status == 'Reimbursement Complete' || @expense_report.status == 'Invoiced' || @expense_report.status == 'Non-forecasted' %>
+		  		<small><strong>Approved by:</strong></small> &nbsp; <span class="badge badge-info"><%= @expense_report.approval_initials %></span><br /><small><strong>Approved Date:</strong> &nbsp; <%= format_day(@expense_report.approval_date || Time.now) %></small>
+			 	<% end %>
+			 </p>
+			 <p class="span3">
+				<% if @expense_report.status == 'Invoiced' %>
+					<small><strong>Invoice Number:</strong> &nbsp; <span class="badge badge-info"><%= @expense_report.invoice_number %></span><br /><strong>Invoice Date:</strong> &nbsp; <%= format_day(@expense_report.invoice_date) %></small>
+				<% end %> 
+			 </p>
+			 
+ 				<% if @expense_report.status == 'Reimbursement Requested' || @expense_report.status == 'Reimbursement Complete' || @expense_report.status == 'Invoiced' %>
+					<p class="span9" style="margin-top: 12px;">
+						<small><strong>Reimbursement Check Number:</strong> &nbsp; <input type="text" class="textfield input-small" name="check_number" id="check_number" value="<%= @expense_report.check_number %>"></span> &nbsp; <strong>Reimbursement Date:</strong> &nbsp; <%= date_to_field('check_date', (@expense_report.check_date || Time.now)) %></small>
+			 		</p>
+				<% end %> 
+			 
+			 <p class="span1 offset2" style="margin-top: 12px;">
+			</form>
+				<a href="/travel/<%= @expense_report.id %>/delete" class="delete btn btn-danger pull-right"><i class="icon-trash"></i></a>
+			</p>
+		</div>
+	</div>
+	<% end %>		
+</div>
+
+<!-- Instruction always visible -->
+
+<div class="row">
+	<div class="span12">
+
+		<hr class="thick" />
+	
+		<div class="accordion" id="accordion2">
+		  <div class="accordion-group">
+		    <div class="accordion-heading">
+		      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+		        <strong>Instructions</strong>
+		      </a>
+		    </div>
+		    <div id="collapseOne" class="accordion-body collapse">
+		      <div class="accordion-inner">
+					<p>Complete the Pre-Travel Authorization section <strong>before your trip</strong>.</p>
+
+					<p>Complete the Post-Travel Reimbursement section <strong>after your trip</strong>.</p>
+
+					<p>If your trip requires flying, please use CTC's Travel Agent to book your flight &amp; hotel room. Call Katherine McMillan (of Travel Leaders) at 770-441-0311.</p>
+
+					<p>Email scanned receipts to Pang Lo at <a href="mailto:plo@careertrain.com">plo@careertrain.com</a> <em>OR</em> fax receipts to <strong>770-729-8099</strong>. Please reference the <strong>travel number</strong> with your receipt submission.</p>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="accordion-group">
+		    <div class="accordion-heading">
+		      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+		        <strong>Reimbursement Clarifications</strong>
+		      </a>
+		    </div>
+		    <div id="collapseTwo" class="accordion-body collapse">
+		      <div class="accordion-inner">
+					<p>(Also see CTC Travel Policy SOP and the Joint Travel Regs)</p>
+               <ul>
+						<li>CTC has to follow government regulations for travel reimbursement.</li>
+						<li>Commuter mileage to work (duty station) is not reimbursable.</li>
+						<li>You are to be assigned a "Commuter Mileage" number that is your daily commute. Enter your <strong>Commuter Mileage</strong> in the designated cell for daily trips, and the form will calculate your Personal Owned Vehicle (POV) mileage reimbursement. If the form covers POV miles over multiple days, multiply your Commuter Mileage by the number of days and enter the total.</li>
+						<li>Mileage &amp; parking fees for travel to an airport is reimbursable.</li>
+						<li>Per Diem allowance is reimbursable only when the travel/work period exceeds 12 hours.</li>
+						<li>Lodging taxes can be reimbursed separately from the room cost when such taxes push the total over the applicable lodging per diem amount (list such taxes in the Other/Misc. cell).</li>
+					</ul>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="accordion-group">
+		    <div class="accordion-heading">
+		      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+		        <strong>Commuter Mileage Examples</strong>
+		      </a>
+		    </div>
+		    <div id="collapseThree" class="accordion-body collapse">
+		      <div class="accordion-inner">
+					<p><strong>Example 1:</strong> If your Commuter Mileage is 10 miles, and you take a day trip that is 30 miles round trip, enter 30 in the "Trip Miles" box and enter 10 in your Commuter Miles box. You will be reimbursed for 20 miles. (30 - 10)</p>
+
+					<p><strong>Example 2:</strong> If you take an overnight trip that is 300 miles round trip, enter 300 in the "Trip Miles" box, and do not enter any Commuter Mileage. You'll be reimbursed for 300 miles. (300 - 0)</p>
+		      </div>
+		    </div>
+		  </div>
+		
+	</div>
+	
+</div>
+</div>

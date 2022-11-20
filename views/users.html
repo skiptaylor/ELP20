@@ -1,0 +1,107 @@
+<div class="row">
+	<div class="span12">
+		<div class="pull-right">
+			
+			<a href="/vcard/all" class="btn">Download&nbsp;all&nbsp;contacts</a>
+			<div class="btn-group pull-right">
+				<a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+					Reports 
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/reports/summary/<%= Time.now.strftime("%B").downcase %>/<%= Time.now.strftime("%Y") %><%= "?state=#{params[:state]}" if params[:state] && params[:state] != 'all' %>">Summary Report</a></li>
+					<li><a href="/reports/custom_summary/<%= Chronic.parse("1 month ago").strftime("%Y-%m-%d") %>/<%= Time.now.strftime("%Y-%m-%d") %><%= "?state=#{params[:state]}" if params[:state] && params[:state] != 'all' %>">Custom Summary Report</a></li>
+					<li>
+						<% if session[:admin] %>
+							<a href="/reports/asvab">New ASVAB Summary</a>
+						<% end %>
+					</li>
+					
+						<% if session[:admin] %>
+					<li class="divider"></li>
+					<li><a href="/reports/summary_nc/<%= Time.now.strftime("%B").downcase %>/<%= Time.now.strftime("%Y") %><%= "?state=#{params[:state]}" if params[:state] && params[:state] != 'all' %>">NC Summary Report</a></li>
+					<li><a href="/reports/custom_summary_nc/<%= Chronic.parse("1 month ago").strftime("%Y-%m-%d") %>/<%= Time.now.strftime("%Y-%m-%d") %><%= "?state=#{params[:state]}" if params[:state] && params[:state] != 'all' %>">NC Custom Summary Report</a></li>
+						<% end %>
+					
+				</ul>
+			</div>
+			&nbsp;
+			
+		
+		</div>
+		<h1>Admin</h1>
+	</div>
+</div>
+
+<hr />
+
+<div class="row">
+	<div class="span12">
+	
+		<div class="btn-group pull-right">
+
+			<% if params[:show] && params[:show] == 'deactive' %>
+				<a href="/users"  class="btn btn-success">Show Active</a>
+			<% else %>
+				<a href="/users/?show=deactive" class="btn btn-success">Show Deactive</a>
+			<% end %>
+		
+		
+			<% if session[:admin] %>
+			<a href="/users/new" class="btn btn-success"><i class="icon-plus"></i> New User</a>
+			<% end %>
+		</div>
+
+		<% unless session[:state_customer] %>
+		<div class="input-append">
+			<form method="post">
+				<select name="states">
+					<option value="all">All</option>
+					<% session[:regional] ? states = State.all(:region_id => User.get(session[:user]).region.id) : states = State.all %>
+					<% states.all(:order => :name).group_by(&:region_id).each do |r, states| %>
+						<optgroup label="<%= Region.get(r).name %>">
+							<% states.each do |s| %><option value="<%= s.abbr %>" <%= 'selected' if params[:state] == s.abbr %>><%= s.name %></option><% end %>
+						</optgroup>
+					<% end %>
+				</select>
+				&nbsp;<input type="submit" value="Show" class="btn btn-success" />
+			</form>
+		</div>
+		<% end %>
+		
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<table class="table table-condensed table-striped table-hover">
+			<tr>
+				<th align="left">Name</th>
+				<th align="left">Title</th>
+				<th align="left">State</th>
+				<th align="left">Email</th>
+				<th align="left">Activity Reports</th>
+				<th align="left" <%= hidden unless session[:admin] %>>Status</th>
+			</tr>
+
+			<% @users.all(order: :last_name).each do |u| %>
+			
+			<tr>
+				<td><a href="/users/<%= u.id %>/profile"><%= u.display_name %></a></td>
+				<td><%= u.title %></td>
+				<td><%= u.state.abbr %></td>
+				<td><a href="mailto:<%= u.email %>"><%= u.email %></a></td>
+				<td><a href="/users/<%= u.id %>/reports">View Reports</a></td>
+				<td <%= hidden unless session[:admin] %>>
+					<% if params[:show] && params[:show] == 'deactive' %>
+						<a href="/users/<%= u.id %>/activate">Reactivate</a>
+					<% else %>
+						<a href="/users/<%= u.id %>/deactivate">Deactivate</a>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+

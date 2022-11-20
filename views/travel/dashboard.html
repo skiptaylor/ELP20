@@ -1,0 +1,108 @@
+<div class="row">
+	<div class="span12">
+		<p class="pull-right"><a href="/travel/grid" class="btn btn-primary">Reimbursement Monitor</a> &nbsp;<a href="/travel/approval" class="btn btn-primary">NGB Page</a></p>
+		<h1>Travel Dashboard</h1>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="span12">
+		<p class="pull-left"><a href="/travel/approved_on" class="btn btn-primary">Approved Travel</a></p>
+		<form method="get" class="form-inline" style="text-align: right;">
+			<%= date_to_field('rc_start_date', @start_date) %>
+			<span id="rc_date-separator">-</span>
+			<%= date_to_field('rc_end_date', @end_date) %>
+      	<input type="text" id="inv_num" name="inv_num" placeholder="Invoice Number" value="<%= params[:inv_num] %>" />
+
+			&nbsp;
+			<select name="status" id="status">
+				<option value="New" <%= 'selected' if params[:status] == 'New' %>>New</option>
+				<option value="PM RFI" <%= 'selected' if params[:status] == 'PM RFI' %>>PM RFI</option>
+				<option value="NGB Approved" <%= 'selected' if params[:status] == 'NGB Approved' %>>NGB Approved</option>
+				<option value="NGB RFI" <%= 'selected' if params[:status] == 'NGB RFI' %>>NGB RFI</option>
+				<option value="Non-forecasted" <%= 'selected' if params[:status] == 'Non-forecasted' %>>Non-forecasted Travel</option>
+				<option value="Reimbursement Requested" <%= 'selected' if params[:status] == 'Reimbursement Requested' %>>Reimbursement Requested</option>
+				<option value="Reimbursement Complete" <%= 'selected' if params[:status] == 'Reimbursement Complete' %>>Reimbursement Complete</option>
+				<option value="Invoiced" <%= 'selected' if params[:status] == 'Invoiced' %>>Invoiced</option>
+				<option value="Cancelled" <%= 'selected' if params[:status] == 'Cancelled' %>>Cancelled</option>
+			</select>
+
+			<input type="submit" value="Filter" class="btn btn-info" />
+
+		</form>
+
+		<table id="approval" class="table table-condensed table-striped table-bordered table-hover approval">
+			<tr>
+				<th style="text-align: center;">#</th>
+				<th>EC Name</th>
+				<th style="text-align: center;">Start Date</th>
+				<th style="text-align: center;">End Date</th>
+				<th>Origin</th>
+				<th>Destination</th>
+				<th>Purpose</th>
+				<th>Cost Item</th>
+				<% if (params[:status] != 'Reimbursement Complete') %>
+				<th style="text-align: center;">Projected</th>
+				<% end %>
+				<th style="text-align: center;">Trip Cost</th>
+				<% if (params[:status] != 'Reimbursement Complete') %>
+				<th style="text-align: center;">Variance</th>
+				<% end %>
+				<% if (params[:status] == 'Reimbursement Complete') %>
+				<th style="text-align: center;"> </th>
+				<% end %>
+			</tr>
+
+		<form method="post" class="expenseReport">
+
+			<% @expense_reports.sort{ |a,b| a.user.last_name.downcase <=> b.user.last_name.downcase }.each do |report| %>
+			<tr>
+				<td style="text-align: center;"><a href="/travel/<%= report.id %>/edit"><strong><%= report.id %></strong></td>
+				<td><%= report.user.display_name %> - <%= report.user.state.abbr %></td>
+				<td style="text-align: center;"><%= format_day(report.start_date) if report.start_date %></td>
+				<td style="text-align: center;"><%= format_day(report.end_date) if report.end_date %></td>
+				<td><%= report.origin %></td>
+				<td><%= report.destination %></td>
+				<td><%= report.reason_for_travel %></td>
+				<td><%= report.cost_items_list %></td>
+				<% if (params[:status] != 'Reimbursement Complete') %>
+				<td style="text-align: right;"><%= dollarize(report.total_estimated_cost) %></td>
+				<% end %>
+				<th style="text-align: right;"><%= dollarize(report.total_cost_of_trip) %></th>
+				<% if (params[:status] != 'Reimbursement Complete') %>
+				<td style="text-align: right;"><%= dollarize(report.variance) %></td>
+				<% end %>
+				<% if (params[:status] == 'Reimbursement Complete') %>
+				<td style="text-align: center;"><input type="checkbox" name="reports_to_invoice[<%= report.id %>]" id="reports_to_invoice[<%= report.id %>]"></td>
+				<% end %>
+			</tr>
+			<% end %>
+
+			<tr>
+				<th colspan="8" style="text-align: right;">Totals:</th>
+				<% if (params[:status] != 'Reimbursement Complete') %>
+				<td style="text-align: right;"><%= dollarize(@grand_total_estimated_cost) %></td>
+				<% end %>
+				<td style="text-align: right;"><%= dollarize(@grand_total_cost_of_trip) %></td>
+				<% if (params[:status] != 'Reimbursement Complete') %>
+				<td style="text-align: right;"><%= dollarize(@grand_variance) %></td>
+				<% end %>
+				<% if (params[:status] == 'Reimbursement Complete') %>
+				<td> </td>
+				<% end %>
+			</tr>
+
+		</table>
+
+		<div class="span9 pull-right" id="account">
+			<label class="horz">Invoice Number</label>
+	    		<input type="text" name="submit_invoiced" class="textfield input-small dec" id="submit_invoiced" /> &nbsp;
+			<%= date_to_field('invoice_date', (@invoice_date || Time.now)) %> &nbsp;
+			<input type="submit" value="Submit" class="btn btn-success" /><br />
+			<p style="font-size: .8em; text-align: center; padding-top: 9px;"><small>Please be sure you have invoiced all reports before submitting.<br />Selecting <strong>Submit</strong> changes the status of all reports on this page.</small></p>
+  		</div>
+
+	</form>
+ 	</div>
+</div>

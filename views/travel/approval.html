@@ -1,0 +1,86 @@
+<div class="row">
+	<div class="span12">
+		<h1>Travel Approval</h1>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="span12">
+		<h4>Forecasted Travel</h4>
+		<form method="post">
+			<table id="approval" class="table table-condensed table-striped table-bordered table-hover approval" style="font-size: 1.1em;">
+				<tr>
+					<th> </th>
+					<th>EC Name</th>
+					<th style="text-align: center;">Start Date</th>
+					<th style="text-align: center;">End Date</th>
+					<th>Origin</th>
+					<th>Destination</th>
+					<th>Purpose</th>
+					<th style="text-align: center;">Cost</th>
+					<th>Cost Item</th>
+					<th></th>
+				</tr>
+				<% @forcasted.each do |report| %>
+				<tr>
+					<td style="text-align: center;"><a href="/travel/<%= report.id %>/edit"><i class="icon-edit"></i></th>
+					<td><%= report.user.display_name %> - <%= report.user.state.abbr %></th>
+					<td style="text-align: center;"><%= format_american_day(report.start_date) %></th>
+					<td style="text-align: center;"><%= format_american_day(report.end_date) %></th>
+					<td><%= report.origin %></th>
+					<td><%= report.destination %></th>
+					<td><%= report.reason_for_travel %></th>
+					<td style="text-align: right;"><%= dollarize(report.total_estimated_cost) %></th>
+					<td><%= report.cost_items_list %></th>
+					<td style="text-align: center;">
+						<select class="sm input-small" name="[status][<%= report.id %>]" id="[status][<%= report.id %>]">
+							<option value="NGB Approved">Approved</option>
+							<option value="NGB RFI" <%= 'selected' if report.status == 'NGB RFI' %>>Request Further Info</option>
+						</select>
+					</td>
+				</tr>
+				<% end %>
+			</table>
+			<h4>Non-Forecasted Travel</h4>
+			<table id="non-forecasted" class="table table-condensed table-striped table-bordered table-hover approval" style="font-size: 1.1em;">
+				<tr>
+					<th> </th>
+					<th>EC Name</th>
+					<th style="text-align: center;">Start Date</th>
+					<th style="text-align: center;">End Date</th>
+					<th>Origin</th>
+					<th>Destination</th>
+					<th>Purpose</th>
+					<th style="text-align: center;">Cost</th>
+					<th>Cost Item</th>
+					<th></th>
+				</tr>
+				<% @non_forcasted.each do |report| %>
+				<tr>
+					<td style="text-align: center;"><a href="/travel/<%= report.id %>/edit"><i class="icon-edit"></i></th>
+					<td><%= report.user.display_name %> - <%= report.user.state.abbr %></th>
+					<td style="text-align: center;"><%= format_american_day(report.start_date) %></th>
+					<td style="text-align: center;"><%= format_american_day(report.end_date) %></th>
+					<td><%= report.origin %></th>
+					<td><%= report.destination %></th>
+					<td><%= report.reason_for_travel %></th>
+					<td style="text-align: right;"><%= dollarize(report.total_estimated_cost) %></th>
+					<td><%= report.cost_items_list %></th>
+					<td style="text-align: center;">
+						<select class="sm input-small" name="[status][<%= report.id %>]" id="[status][<%= report.id %>]">
+							<option value="Non-forecasted">Approved</option>
+							<option value="NGB RFI" <%= 'selected' if report.status == 'NGB RFI' %>>Request Further Info</option>
+						</select>
+					</td>
+				</tr>
+				<% end %>
+			</table>
+			<p class="pull-right">
+				<label class="horz" for="approval_initials">Initials</label>
+				<input type="text" class="textfield input-small dec" name="approval_initials" id="approval_initials" /> 
+				<input class="btn btn-success" type="submit" value="Submit" />
+			</p>
+		</form>
+	</div>
+</div>

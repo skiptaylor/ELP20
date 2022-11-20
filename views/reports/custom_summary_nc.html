@@ -1,0 +1,66 @@
+<div class="pagehead">
+	<img src="/images/arng_rgb_color.png" class="pull-left" style="padding-right: 24px; width: 60px;" />
+	<h2>eduCONNECT&trade; Program - Group Summary 2</h2>
+</div>
+<table class="reporttable">
+	<tr class="sections">
+		<th colspan="16" align="center">School Entry Vehicle Presentations</th>
+		<th rowspan="2" class="spacer"> </th>
+		<th colspan="7" align="center">Guard Meeting</th>
+		<th rowspan="2" class="spacer"> </th>
+		<th colspan="1" align="center">Guard<br />Training</th>
+		<th rowspan="2" class="spacer"> </th>
+		<th colspan="5" align="center">Educator Marketing</th>
+	</tr>
+	<tr class="parts">
+		<th align="center">RRNCO<br />Pres</th>
+		<th align="center">EC&nbsp;Rep<br />Pres</th>
+		<th align="center" class="spacer"> </th>
+		<th align="center">New<br />ASVAB</th>
+		<th align="center">ASVAB<br />Tested</th>
+		<th align="center">ASVAB<br />Proctored</th>
+		<th align="center">ASVAB<br />Promo</th>
+		<th align="center">&nbsp;CEP&nbsp;</th>
+		<th align="center">YCSP</th>
+		<th align="center">&nbsp;CD&nbsp;</th>
+		<th align="center">&nbsp;HOP&nbsp;</th>
+		<th align="center">&nbsp;HUM&nbsp;<br />VEE</th>
+		<th align="center">&nbsp;PIE&nbsp;</th>
+		<th align="center">&nbsp;GFC&nbsp;</th>
+		<th align="center">Other</th>
+		<th align="center">Total</th>
+		<th align="center">&nbsp;RRC&nbsp;</th>
+		<th align="center">&nbsp;SGM&nbsp;</th>
+		<th align="center">Team<br />Leaders</th>
+		<th align="center">RRNCOs</th>
+		<th align="center">&nbsp;ESO&nbsp;</th>
+		<th align="center">&nbsp;OSM&nbsp;</th>
+		<th align="center">&nbsp;MEPS/&nbsp;<br />ESS</th>
+		<th align="center">Number<br />Trained</th>
+		<th align="center">New<br />Contacts</th>
+		<th align="center">Existing<br />Contacts</th>
+		<th align="center">School<br />Visit<br />Attendees</th>
+		<th align="center">Outreach<br />Event<br />Attendees</th>
+		<th align="center">Conference<br />Attendees</th>
+	</tr>
+	
+	<tr class="values">
+		<% @reports.each do |report| %>
+			<%= erb	:'reports/report', :layout => false, :locals => {:report => report, :show => {:description => false, :edit => false}} %>
+		<% end %>
+	</tr>
+	<tr class="separator">
+		<th colspan="32">Category Totals</th>
+	</tr>
+	<tr class="values">
+		<td colspan="32">PARTIAL HERE</td>
+	</tr>	
+	<tr class="separator">
+		<th colspan="32">Year-to-Date Totals</th>
+	</tr>
+	<tr class="values">
+		<td colspan="32">PARTIAL HERE</td>
+	</tr>
+
+</table>
+

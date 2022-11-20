@@ -1,0 +1,36 @@
+<label class="radio inline">
+  <input type="radio" id="search_text" value="search_text" <%= 'checked' if method == 'text' %>>
+  Text
+</label>
+	
+<label class="radio inline">
+  <input type="radio" id="search_date" value="search_date" <%= 'checked' if method == 'date' %>>
+  Month&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</label>
+  
+
+
+<% if method == 'text' %>
+	<input type="text" name="search" id="search" value="<%= params[:search] %>" class="span4" />
+<% elsif method == 'date' %>
+	<select name="month" style="width: 130px;">
+		<option value="january" <%= 'selected' if params[:month] == 'january' %>>January</option>
+		<option value="february" <%= 'selected' if params[:month] == 'february' %>>February</option>
+		<option value="march" <%= 'selected' if params[:month] == 'march' %>>March</option>
+		<option value="april" <%= 'selected' if params[:month] == 'april' %>>April</option>
+		<option value="may" <%= 'selected' if params[:month] == 'may' %>>May</option>
+		<option value="june" <%= 'selected' if params[:month] == 'june' %>>June</option>
+		<option value="july" <%= 'selected' if params[:month] == 'july' %>>July</option>
+		<option value="august" <%= 'selected' if params[:month] == 'august' %>>August</option>
+		<option value="september" <%= 'selected' if params[:month] == 'september' %>>September</option>
+		<option value="october" <%= 'selected' if params[:month] == 'october' %>>October</option>
+		<option value="november" <%= 'selected' if params[:month] == 'november' %>>November</option>
+		<option value="december" <%= 'selected' if params[:month] == 'december' %>>December</option>
+	</select>
+	<select name="year" style="width: 90px;">
+		<% for y in 2011..Time.now.strftime("%Y").to_i do %>
+			<option value="<%= y %>" <%= 'selected' if params[:year] == y.to_s %>><%= y %></option>
+		<% end %>
+	</select>
+<% end %>
+

@@ -1,0 +1,64 @@
+<div class="row">
+	<div class="span12">
+		<h1><i class="icon-bullhorn muted"></i> &nbsp;eduCONNECT&trade; Forum</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+
+		<%= erb :'forum/tabs', :layout => false, :locals => {:current_tab => 'Instructions'} %>
+
+	</div>
+</div>
+<div class="row">
+	<div class="span3">
+		<a href="/forum/sections/<%= @topic.section %>" class="btn btn-small btn-success">Back</a>
+		<a href="/forum/topic/<%= @topic.id %>/edit" class="btn btn-mini btn-success" <%= hidden unless session[:admin] || @topic.user_id == session[:user] %>><i class="icon-edit"></i></a>
+		<a href="/forum/topic/<%= @topic.id %>/delete" class="delete btn btn-mini btn-danger" <%= hidden unless session[:admin] || @topic.user_id == session[:user] %>><i class="icon-trash"></i></a>
+	</div>
+	<div class="span9">
+				
+		<h2>
+			<%= @topic.title %> &nbsp; &nbsp; 
+		</h2>
+		<p class="muted">
+			<strong><%= @topic.user.display_name %>, <%= @topic.user.state.abbr %></strong> - <%= format_day @topic.created_at %>
+		</p>
+		<p><%= markdown @topic.description %></p>
+		</p>
+	</div>
+</div>
+	<hr />
+<div class="row">
+		
+	<div class="span3">
+		<h3>Comments</h3>
+	</div>
+	<div class="span9">
+			
+			<% @comments.each do |comment| %>
+				<p>
+					<div class="btn-group pull-right">
+						<a href="/forum/comment/<%= comment.id %>/edit" class="btn btn-mini" <%= hidden unless session[:admin] || comment.user_id == session[:user] %>>edit</a>
+						<a href="/forum/comment/<%= comment.id %>/delete" class="delete btn btn-mini" <%= hidden unless session[:admin] || comment.user_id == session[:user] %>>delete</a></span>
+					</div>
+					<small><strong><i class="icon-user"></i> &nbsp;<%= comment.user.display_name %></strong> - <%= format_day comment.created_at %></small>
+					<%= markdown comment.body %>
+					<hr class="nospace" />
+				</p>
+			<% end %>
+			
+			
+			
+			<p><%= 'No comments yet. &nbsp; ' if @comments.count == 0 %>Leave a comment.</p>
+				
+			<form method="post" action="/forum/topic/<%= params[:id] %>/comment/">
+				<p>
+					<textarea name="body" class="span9" rows="5" id="body"></textarea>
+				</p>
+				<p><input type="submit" class="btn btn-small btn-success" value="Submit Comment" /></p>
+			</form>
+		
+	</div>
+</div>

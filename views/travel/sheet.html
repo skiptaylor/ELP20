@@ -1,0 +1,131 @@
+<div class="row">
+	<div class="span12">
+		<h1>Travel Reimbursement Monitor</h1>
+	</div>
+</div>
+<hr />
+
+
+
+<%
+  total_elp = []
+  total_months = []
+%>
+<table class="table table-condensed table-striped table-bordered table-hover approval">
+  <tr>
+    <th align="left" colspan="2">Name</th>
+    <th align="right">Jul '12 <% total_months[1] = 0 %></th>
+    <th align="right">Aug '12 <% total_months[2] = 0 %></th>
+    <th align="right">Sep '12 <% total_months[3] = 0 %></th>
+    <th align="right">Oct '12 <% total_months[4] = 0 %></th>
+    <th align="right">Nov '12 <% total_months[5] = 0 %></th>
+    <th align="right">Dec '12 <% total_months[6] = 0 %></th>
+    <th align="right">Jan '13 <% total_months[7] = 0 %></th>
+    <th align="right">Feb '13 <% total_months[8] = 0 %></th>
+    <th align="right">Mar '13 <% total_months[9] = 0 %></th>
+    <th align="right">Apr '13 <% total_months[10] = 0 %></th>
+    <th align="right">May '13 <% total_months[11] = 0 %></th>
+    <th align="right">Jun '13 <% total_months[12] = 0 %></th>
+    <th align="right">Jul '13 <% total_months[13] = 0 %></th>
+    <th align="right">Total</th>
+  </tr>
+  <% @elps.each do |elp| %>
+    <tr>
+      <td>
+        <%= elp.display_name %>
+        <% total_elp[elp.id] = 0 %>
+      </td>
+      <td><%= elp.state.abbr %></td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-07-01'), Chronic.parse('2013-07-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[1] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-08-01'), Chronic.parse('2013-08-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[2] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-09-01'), Chronic.parse('2013-09-30'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[3] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-10-01'), Chronic.parse('2013-10-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[4] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-11-01'), Chronic.parse('2013-11-30'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[5] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-12-01'), Chronic.parse('2013-12-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[6] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-01-01'), Chronic.parse('2013-01-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[7] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-02-01'), Chronic.parse('2013-02-28'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[8] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-03-01'), Chronic.parse('2013-03-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[9] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-04-01'), Chronic.parse('2013-04-30'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[10] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-05-01'), Chronic.parse('2013-05-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[11] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-06-01'), Chronic.parse('2013-06-30'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[12] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <% monthly_total = ExpenseReport.total_reembursement_due_for_reports(ExpenseReport.el_by_dates(elp.id, Chronic.parse('2013-07-01'), Chronic.parse('2013-07-31'))) %>
+        <% total_elp[elp.id] += monthly_total %>
+        <% total_months[13] += monthly_total %>
+        <%= '$' if monthly_total > 0 %><%= truncate_number(monthly_total) %>
+      </td>
+      <td align="right">
+        <%= '$' if total_elp[elp.id] > 0 %><%= truncate_number(total_elp[elp.id]) %>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan="2"></td>
+    <% (1..13).each do |m| %>
+      <td align="right">
+        <%= '$' if total_months[m] > 0 %><%= truncate_number(total_months[m]) %>
+      </td>
+    <% end %>
+    <td></td>
+  </tr>
+</table>

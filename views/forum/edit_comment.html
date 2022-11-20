@@ -1,0 +1,31 @@
+<div class="row">
+	<div class="span12">
+		<h1><i class="icon-bullhorn muted"></i> &nbsp;eduCONNECT&trade; Forum</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+
+		<%= erb :'forum/tabs', :layout => false, :locals => {:current_tab => 'Instructions'} %>
+
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+
+
+
+		<h3>Edit Comment</h3>
+		<form method="post">
+			<p>
+				<textarea name="body" class="span12" rows="7" id="body"><%= @comment.body %></textarea>
+			</p>
+			<p>
+				<input type="submit" class="btn btn-small btn-success" value="Save Comment" />
+				
+				<a href="<%= request.referrer %>" class="btn btn-small">cancel</a>
+			</p>
+		</form>
+	</div>
+</div>

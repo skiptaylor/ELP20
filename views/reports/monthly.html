@@ -1,0 +1,801 @@
+<div class="row">	
+	<div class="span8">
+	
+		<img src="/images/arng_rgb_color.png" class="pull-left" style="padding-right: 24px; width: 60px;" />
+		<h2>eduCONNECT&trade; Program<br />Monthly Report</h2>
+			
+	</div>
+	<div class="span4">
+
+		<a href="/users/<%= params[:user] %>/reports" class="btn btn-success btn-small pull-right">Back</a>
+		
+		<br /><br />
+	
+	<form method="post" class="pull-right">
+		<select name="new_month" style="width: 130px;">
+			<option value="january" <%= 'selected' if params[:month] == 'january' %>>January</option>
+			<option value="february" <%= 'selected' if params[:month] == 'february' %>>February</option>
+			<option value="march" <%= 'selected' if params[:month] == 'march' %>>March</option>
+			<option value="april" <%= 'selected' if params[:month] == 'april' %>>April</option>
+			<option value="may" <%= 'selected' if params[:month] == 'may' %>>May</option>
+			<option value="june" <%= 'selected' if params[:month] == 'june' %>>June</option>
+			<option value="july" <%= 'selected' if params[:month] == 'july' %>>July</option>
+			<option value="august" <%= 'selected' if params[:month] == 'august' %>>August</option>
+			<option value="september" <%= 'selected' if params[:month] == 'september' %>>September</option>
+			<option value="october" <%= 'selected' if params[:month] == 'october' %>>October</option>
+			<option value="november" <%= 'selected' if params[:month] == 'november' %>>November</option>
+			<option value="december" <%= 'selected' if params[:month] == 'december' %>>December</option>
+		</select>
+		<select name="new_year" style="width: 90px;">
+			<% for y in Chronic.parse(Report.first(:order => :date.asc).date).year..Time.now.strftime("%Y").to_i do %>
+				<option value="<%= y %>" <%= 'selected' if params[:year] == y.to_s %>><%= y %></option>
+			<% end %>
+		</select>
+		<input type="submit" value="Switch" class="btn btn-success" />
+	</form>
+	
+   </div>
+</div>
+<div class="row">
+	<div class="span12">
+
+	<h4><i class="icon-user muted"></i> &nbsp;<%= @user.display_name %> - <%= @user.state.abbr %> - <%= titleize params[:month] %></h4>
+	<table class="reporttable">
+		<tr class="sections">
+			<th colspan="20" align="center">Student Activity</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="7" align="center">Guard Meeting</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="1" align="center">Guard<br />Training</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="5" align="center">Educator Marketing</th>
+		</tr>
+		<tr class="parts">
+			<th align="center">EC<br />Rep<br />Pres</th>
+			<th align="center">RRNCO<br />&amp; EC<br />Pres</th>
+			<th align="center">RR<br />NCO<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">New<br />ASVAB</th>
+			<th align="center">ASVAB<br />Tested</th>
+			<th align="center">ASVAB<br />Proctor</th>
+			<th align="center">ASVAB<br />Promo</th>
+			<th align="center">CEP</th>
+			<th align="center">YCSP</th>
+			<th align="center">CD</th>
+			<th align="center">HOP</th>
+			<th align="center">HUM<br />VEE</th>
+			<th align="center">PIE</th>
+			<th align="center">GFC</th>
+			<th align="center">H.E.A.R.</th>
+			<th align="center">Other<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center">Other<br />Actv</th>
+			
+			<th align="center">RRC</th>
+			<th align="center">SGM</th>
+			<th align="center">Team<br />Ldrs</th>
+			<th align="center">RR<br />NCOs</th>
+			<th align="center">ESO</th>
+			<th align="center">OSM</th>
+			<th align="center">MEPS<br />ESS</th>
+			
+			<th align="center">Number<br />Trained</th>
+			
+			<th align="center">New<br />Contacts</th>
+			<th align="center">Existing<br />Contacts</th>
+			<th align="center">School<br />Visit<br />Attendees</th>
+			<th align="center">Outreach<br />Event<br />Attendees</th>
+			<th align="center">Conference<br />Attendees</th>		
+		</tr>
+	
+	
+	<tr class="separator">
+		<th colspan="36">YTD TOTALS LAST MONTH</th>
+	</tr>
+	<tr class="values">
+		<% total = 0 %>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.elp_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.rrnco_elp_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.rrnco_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.pres_total} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.asvab_new_exists == 'new'} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.asvab} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.asvab_proctored} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.asvab_promo} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.cep} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.ycsp} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.cd} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.hop} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.humvee} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.pie} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.gfc} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.hear} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.other} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<%= total %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.other_activity} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.rrc} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.sgm} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.team_leader} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.rrnco} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.eso} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.osm} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + 1 if r.mep_ess} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.trained} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.new_contacts} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.existing_contacts} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.attendees_visit} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.attendees_event} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_without_current_month.each {|r| current_count = current_count + r.attendees_conf} %>
+			<%= current_count %>
+		</td>
+	</tr>
+	<tr class="separator">
+		<th colspan="36">MONTHLY STANDARD</th>
+	</tr>
+	<tr class="standards">
+			<td colspan="2" align="center"><%= settings.monthly_avg[:elp_pres] %></td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td class="spacer"> </td>
+			<td><%= settings.monthly_avg[:asvab_new_exists] %></td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td class="spacer"> </td>
+			<td><%= settings.monthly_avg[:rrc] %></td>
+			<td><%= settings.monthly_avg[:sgm] %></td>
+			<td><%= settings.monthly_avg[:team_leader] %></td>
+			<td>&#8211;</td>
+			<td><%= settings.monthly_avg[:eso] %></td>
+			<td>&#8211;</td>
+			<td><%= settings.monthly_avg[:mep_ess] %></td>
+			<td class="spacer"> </td>
+			<td>&#8211;</td>
+			<td class="spacer"> </td>
+			<td><%= settings.monthly_avg[:new_contacts] %></td>
+			<td><%= settings.monthly_avg[:existing_contacts] %></td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+
+	</tr>
+	<tr class="separator">
+		<th colspan="36">TOTALS FOR <%= titleize params[:month] %></th>
+	</tr>	
+
+	<tr class="values">
+		<% total = 0 %>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.elp_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.rrnco_elp_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.rrnco_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.pres_total} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.asvab_new_exists == 'new'} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.asvab} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.asvab_proctored} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.asvab_promo} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.cep} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.ycsp} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.cd} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.hop} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.humvee} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.pie} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.gfc} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.hear} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.other} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<%= total %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.other_activity} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.rrc} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.sgm} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.team_leader} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.rrnco} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.eso} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.osm} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.mep_ess} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.trained} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.new_contacts} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.existing_contacts} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.attendees_visit} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.attendees_event} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.attendees_conf} %>
+			<%= current_count %>
+		</td>
+	</tr>
+	
+	<tr class="separator">
+		<th colspan="36">YOUR DIFFERENCE FROM STANDARDS</th>
+	</tr>
+	<tr class="values">
+
+		<td colspan="2" align="center">
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.elp_pres + r.rrnco_elp_pres} %>
+			<%= current_count - settings.monthly_avg[:elp_pres] %> 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.asvab_new_exists == 'new'} %>
+			<%= current_count - settings.monthly_avg[:asvab_new_exists] %>
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.rrc} %>
+			<%= current_count - settings.monthly_avg[:rrc] %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.sgm} %>
+			<%= current_count - settings.monthly_avg[:sgm] %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.team_leader} %>
+			<%= current_count - settings.monthly_avg[:team_leader] %>
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.eso} %>
+			<%= current_count - settings.monthly_avg[:eso] %>
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + 1 if r.mep_ess} %>
+			<%= current_count - settings.monthly_avg[:mep_ess] %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			 
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.new_contacts} %>
+			<%= current_count - settings.monthly_avg[:new_contacts] %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_current_month.each {|r| current_count = current_count + r.existing_contacts} %>
+			<%= current_count - settings.monthly_avg[:existing_contacts]%>
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+		<td>
+			 
+		</td>
+
+	</tr>
+	
+	
+	
+	<tr class="separator">
+		<th colspan="36">CURRENT YTD TOTALS</th>
+	</tr>
+	<tr class="values">
+		<% total = 0 %>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.elp_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.rrnco_elp_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.rrnco_pres} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.pres_total} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.asvab_new_exists == 'new'} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.asvab} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.asvab_proctored} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.asvab_promo} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.cep} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.ycsp} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.cd} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.hop} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.humvee} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.pie} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.gfc} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.hear} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.other} %>
+			<%= current_count %>
+			<% total = total + current_count %>
+		</td>
+		<td>
+			<%= total %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.other_activity} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.rrc} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.sgm} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.team_leader} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.rrnco} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.eso} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.osm} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + 1 if r.mep_ess} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.trained} %>
+			<%= current_count %>
+		</td>
+		<td class="spacer"> </td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.new_contacts} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.existing_contacts} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.attendees_visit} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.attendees_event} %>
+			<%= current_count %>
+		</td>
+		<td>
+			<% current_count = 0 %>
+			<% @reports_from_past_year_with_current_month.each {|r| current_count = current_count + r.attendees_conf} %>
+			<%= current_count %>
+		</td>
+
+	</tr>
+</table>
+
+</div>
+</div>

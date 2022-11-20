@@ -1,0 +1,36 @@
+<div class="row">	
+	<div class="span12">
+	
+		<h1>Contact your eduCONNECT&trade; Representative</h1>
+		<hr />
+		<p>If you are a high school or post-secondary education educator, and you would like more information about the types of programs that the Army National Guard can provide to your students, please use this chart to find your corresponding eduCONNECT representative:</p>
+		<br />
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+		<table class="table table-condensed table-striped table-hover table-bordered">
+			<tr>
+				<th>State</th>
+				<th>State Area</th>
+				<th>eduCONNECT Representative</th>
+				<th>Phone #</th>
+				<th>Email</th>
+			</tr>
+			<% row_id = 0 %>
+			<% @users.sort{|a,b| a.state.abbr <=> b.state.abbr}.each do |u| %>
+				<%
+					row_id = row_id + 1
+					row_id.even? ? row_class = 'even' : row_class = 'odd'
+				%>
+				<tr class="<%= row_class %>">
+					<td><%= u.state.abbr %></td>
+					<td><%= u.area %></td>
+					<td><%= u.display_name %></td>
+					<td><%= u.phone3 %></td>
+					<td><a href="mailto:<%= u.email %>"><%= u.email %></a></td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+</div>

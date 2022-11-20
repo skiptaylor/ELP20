@@ -1,0 +1,154 @@
+<div class="row">	
+	<div class="span7">
+	
+		<img src="/images/arng_rgb_color.png" class="pull-left" style="padding-right: 24px; width: 60px;" />
+		<h2>eduCONNECT&trade; Program<br />Activity Reports</h2>
+			
+	</div>
+	<div class="span5">		
+		<form method="get" action="/users/<%= params[:user_id] %>/reports" style="float: right; text-align: right;">
+
+			
+			<a href="/users/<%= params[:user_id] %>/reports/new" class="btn btn-success"><i class="icon-plus"></i> &nbsp; New Report</a>
+			
+
+			
+			<a href="/reports/monthly/<%= Time.now.strftime("%B").downcase %>/<%= Time.now.strftime("%Y") %>/?user=<%= params[:user_id] %>" class="btn btn-primary">Summary</a>
+
+		
+
+	</div>
+</div>
+<div class="row">	
+	<div class="span12" style="text-align: right;">	
+	
+			<div class="btn-group pull-right" data-toggle="button-radio" style="margin-left: 24px;">
+				<a href="/users/<%= params[:user_id] %>/reports" type="button" class="btn btn-success">Last 30 reports</a>
+				<a href="/users/<%= params[:user_id] %>/reports?show=30days" type="button" class="btn btn-success">Last 30 days</a>
+				<a href="/users/<%= params[:user_id] %>/reports?show=all" type="button" class="btn btn-success">Show All</a>
+			</div>
+			
+			</form>
+		
+			<form class="form-inline">
+			
+				<% params[:month] ? method = 'date' : method = 'text' %>
+	
+				<span id="search_params">&nbsp;
+					<%= erb :'reports/search', :layout => false, :locals => {:method => method} %>
+				</span>
+		
+				<input type="submit" value="Search" class="btn btn-success" />
+
+			</form>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+
+		<table class="reporttable">
+			<tr class="sections">
+				<th colspan="20" align="center">Student Activity</th>
+				<th rowspan="2" class="spacer"> </th>
+				<th colspan="7" align="center">Guard Meeting</th>
+				<th rowspan="2" class="spacer"> </th>
+				<th colspan="1" align="center">Guard<br />Training</th>
+				<th rowspan="2" class="spacer"> </th>
+				<th colspan="5" align="center">Educator Marketing</th>
+			</tr>
+			<tr class="parts">
+				<th align="center">EC<br />Rep<br />Pres</th>
+				<th align="center">RRNCO<br />&amp; EC<br />Pres</th>
+				<th align="center">RR<br />NCO<br />Pres</th>
+				<th align="center">Total</th>
+				<th align="center" class="spacer"> </th>
+				<th align="center">New<br />ASVAB</th>
+				<th align="center">ASVAB<br />Tested</th>
+				<th align="center">ASVAB<br />Proctor</th>
+				<th align="center">ASVAB<br />Promo</th>
+				<th align="center">CEP</th>
+				<th align="center">YCSP</th>
+				<th align="center">CD</th>
+				<th align="center">HOP</th>
+				<th align="center">HUM<br />VEE</th>
+				<th align="center">PIE</th>
+				<th align="center">GFC</th>
+				<th align="center">H.E.A.R.</th>
+				<th align="center">Other<br />Pres</th>
+				<th align="center">Total</th>
+				<th align="center">Other<br />Actv</th>
+
+				<th align="center">RRC</th>
+				<th align="center">SGM</th>
+				<th align="center">Team<br />Ldrs</th>
+				<th align="center">RR<br />NCOs</th>
+				<th align="center">ESO</th>
+				<th align="center">OSM</th>
+				<th align="center">MEPS<br />ESS</th>
+
+				<th align="center">Number<br />Trained</th>
+
+				<th align="center">New<br />Contacts</th>
+				<th align="center">Existing<br />Contacts</th>
+				<th align="center">School<br />Visit<br />Attendees</th>
+				<th align="center">Outreach<br />Event<br />Attendees</th>
+				<th align="center">Conference<br />Attendees</th>
+			</tr>
+			
+			<tr class="separator">
+				<th colspan="36">MONTHLY STANDARD</th>
+			</tr>
+			<tr class="standards">
+				<td colspan="2" align="center"><%= settings.monthly_avg[:elp_pres] %></td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td class="spacer"> </td>
+				<td><%= settings.monthly_avg[:asvab_new_exists] %></td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td class="spacer"> </td>
+				<td><%= settings.monthly_avg[:rrc] %></td>
+				<td><%= settings.monthly_avg[:sgm] %></td>
+				<td><%= settings.monthly_avg[:team_leader] %></td>
+				<td>&#8211;</td>
+				<td><%= settings.monthly_avg[:eso] %></td>
+				<td>&#8211;</td>
+				<td><%= settings.monthly_avg[:mep_ess] %></td>
+				<td class="spacer"> </td>
+				<td>&#8211;</td>
+				<td class="spacer"> </td>
+				<td><%= settings.monthly_avg[:new_contacts] %></td>
+				<td><%= settings.monthly_avg[:existing_contacts] %></td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+				<td>&#8211;</td>
+			</tr>
+			
+			<% unless session[:state_customer] || session[:ngb_customer]  %>
+				<% @reports.each do |report| %>
+					<%= erb	:'reports/report', :layout => false, :locals => {:report => report, :show => {:description => true, :edit => true}} %>
+				<% end %>
+			<% else %>
+				<% @reports.each do |report| %>
+					<%= erb	:'reports/report', :layout => false, :locals => {:report => report, :show => {:description => true, :edit => false}} %>
+				<% end %>
+			<% end %>
+		
+		</table>
+
+	</div>
+</div>

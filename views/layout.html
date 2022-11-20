@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Career Training Concepts Inc.</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/bootstrap-responsive.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/font-awesome.css" />
+	<% unless request.url.include? 'okelp.com' %>
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/theme.css" />
+	<% else %>
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/theme-ok.css" />
+	<% end %>
+		<script type="text/javascript" src="/javascripts/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery-ui-1.8.18.min.js"></script>
+		<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<script type="text/javascript" src="/javascripts/application.js"></script>
+		<script type="text/javascript">
+		 var RecaptchaOptions = {
+		    theme : 'white'
+		 };
+		 </script>
+		
+		<link rel="shortcut icon" href="/img/favicon.ico">
+	</head>
+
+	<body id="elp">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">   
+          <a class="brand" href=""><img src="/images/ctc_header_logo.png" /></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right" style="margin-top: 12px;">
+            
+            	<%= erb(:'nav-elp', :layout => false) 	 if request.url.include? 'elpactivities.com' or request.url.include? 'localhost:4567' %>
+            	
+            		
+					   </ul>
+					 </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="content">
+	    <div class="container">
+	    	
+	    	<%= bootstrap_alert %>
+	    	<%= flash %>
+				<%= yield %>
+				
+				<footer>
+					<p class="pull-right"><i class="icon-user"></i> &nbsp; <%= session[:email] %></p>
+					<p class="pull-left">&copy; <%= Time.now.strftime("%Y") %> <strong>Career Training Concepts Inc.</strong> &nbsp;  &nbsp; 888-326-9229 &nbsp;  &nbsp; All rights reserved.</p>
+				</footer>
+					
+			</div> <!-- content -->
+		</div> <!-- container -->		
+
+	</body>
+</html>

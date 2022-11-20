@@ -1,0 +1,9 @@
+<h1>Logins</h1>
+
+<% @logins.each do |l| %>
+<p>
+	<small><%= format_day l.created_at %></small>
+	&nbsp;	
+	<%= l.user.display_name %>
+</p>
+<% end %>

@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="span12">
+		<h1><i class="icon-download muted"></i> &nbsp;Downloads</h1>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="span6">
+
+			<h2>EC</h2>
+
+			<form method="post" enctype="multipart/form-data" <%= hidden unless session[:admin] || session[:regional] %>>
+				<p>
+					<label for="name">Name</label>
+					<input type="text" class="textfield span6" name="elp_name" id="elp_name"" /><br />
+					<input type="file" name="elp_file" id="elp_file" />
+				</p>
+				<p>
+					<label for="description">Description</label>
+					<textarea name="elp_description" id="elp_description" class="span6" rows="5"></textarea>
+				</p>
+				<p><input type="submit" value="Upload" class="btn btn-small btn-success" /></p>
+			</form>
+			
+			<p><span class="label label-info">Heads up</span> &nbsp; <small>To download one of the below documents, right-click the link and choose “Save Target As…”</small></p>
+		
+			<% @elp_downloads.each do |dl| %>
+				<hr class="nospace" />
+				<p>
+					<small><%= format_day_with_time dl.created_at - 0.208 %></small>
+					<br />
+					<a <%= hidden unless session[:admin] || session[:regional] %> href="/downloads/<%= dl.id %>/delete" class="delete btn btn-mini">delete</a>
+					 &nbsp; <a href="/files/<%= dl.filename %>" Style="font-size: 15px; font-weight: bold;"><%= dl.name.length > 0 ? dl.name : dl.filename %></a>
+					<br >
+					<%= dl.description %>
+				</p>
+			<% end %>
+	</div>
+
+	<div class="span6">
+			<h2>CTC Policies</h2>
+			
+			<form method="post" enctype="multipart/form-data" <%= hidden unless session[:admin] || session[:regional] %>>
+				<p>
+					<label for="name">Name</label>
+					<input type="text" class="textfield span6" name="ctc_name" id="ctc_name" />
+					<input type="file" name="ctc_file" id="ctc_file" />
+				</p>
+				<p>
+					<label for="description">Description</label>
+					<textarea name="ctc_description" id="ctc_description" class="span6" rows="5"></textarea>
+				</p>
+				<p><input type="submit" value="Upload" class="btn btn-small btn-success" /></p>
+			</form>
+			
+			<p><span class="label label-info">Heads up</span> &nbsp; <small>To download one of the below documents, right-click the link and choose “Save Target As…”</small></p>
+		
+			<% @ctc_downloads.each do |dl| %>
+			<hr class="nospace" />
+				<p>
+					<small><%= format_day_with_time dl.created_at - 0.208 %></small>
+					<br />
+					<a <%= hidden unless session[:admin] || session[:regional] %> href="/downloads/<%= dl.id %>/delete" class="delete btn btn-mini">delete</a>
+					 &nbsp; <a href="/files/<%= dl.filename %>" Style="font-size: 15px; font-weight: bold;"><%= dl.name.length > 0 ? dl.name : dl.filename %></a>
+					<br />
+					<%= dl.description %>
+				</p>
+			<% end %>
+		
+	</div>
+</div>

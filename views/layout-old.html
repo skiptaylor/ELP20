@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Career Training Concepts Inc.</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<% unless request.url.include? 'http://okelp.com' %>
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/bootstrap-responsive.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/theme.css" />
+	<% else %>
+		<link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/theme-ok.css" />
+	<% end %>
+		<script type="text/javascript" src="/javascripts/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery-ui-1.8.18.min.js"></script>
+		<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/javascripts/application.js"></script>
+		
+		<link rel="shortcut icon" href="/img/favicon.ico">
+	</head>
+
+	<body id="elp">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">   
+          <a class="brand" href="/home"><img src="/images/ctc_header_logo.png" /></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right" style="margin-top: 12px;">
+            
+            
+            
+            
+            	<% unless session[:user] %>
+	            <li class="<%= active 'home' %>"><a href="/home">Home</a></li>
+	            <li class="dropdown <%= active ['personnel', 'training', 'publications'] %>">
+	            	<a href="#" class="dropdown-toggle" data-toggle="dropdown">What we do <b class="caret"></b></a>
+	            	<ul class="dropdown-menu">					                	
+	                	<li class="<%= active 'personnel' %>"><a href="/personnel">Personnel Services</a></li>
+	                	<li class="<%= active 'training' %>"><a href="/training">Training Services</a></li>
+	                	<li class="<%= active 'publications' %>"><a href="/publications">Publications</a></li>
+	               </ul>
+	            </li>
+							<li class="dropdown <%= active ['corporate', 'elp', 'gsa','partners', 'careers', 'contact'] %>">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Corporate <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li class="<%= active 'corporate' %>"><a href="/corporate" <%= active 'corporate' %>>Corporate Team</a></li>
+									<li class="<%= active 'elp' %>"><a href="/elp">eduCONNECT&trade; Program</a></li>
+									<li class="<%= active 'gsa' %>"><a href="/gsa">GSA Contract Information</a></li>
+									<li class="<%= active 'partners' %>"><a href="/partners">Partners</a></li>
+									<li class="<%= active 'careers' %>"><a href="/careers">Careers</a></li>
+									<li class="<%= active 'contact' %>"><a href="/contact">Contact Us</a></li>
+								</ul>
+							</li>
+							<% end %>
+					
+							<% unless request.url.include? 'http://okelp.com' %>
+							<li class="dropdown <%= active ['elp','elp-contacts'] %>">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">eduCONNECT&trade; <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+			            <li class="<%= active 'elp' %>"><a href="/elp">eduCONNECT&trade; Program</a></li>
+			            <li class="<%= active 'elp-contacts' %>"><a href="/elp-contacts">Contact Liaison in Your State</a></li>
+			          </ul>
+			        </li> 
+			        <% end %>  
+			          
+							<% if session[:user] %>
+							<li class="<%= active 'elp-contacts' %>"><a href="/elp-contacts">eduCONNECT&trade;</a></li>
+							<li class="dropdown <%= active ['reports','forum','downloads','profile'] %>">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Activities <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li class="<%= active 'reports' %>"><a href="/users/<%= session[:user] %>/reports">Activities Report</a></li>
+										<% unless request.url.include? 'http://okelp.com' %>
+										<li class="<%= active 'forum' %>"><a href="/forum/instructions">Forum</a></li>
+										<li class="<%= active 'downloads' %>"><a href="/downloads">Downloads</a></li>
+										<% end %>
+										<li class="<%= active 'profile' %>"><a href="/profile">Profile</a></li>
+									</ul>
+							</li>
+							<% end %>
+							<% if session[:admin] || session[:ngb_customer] || session[:regional] || session[:state_customer] %>
+							<li class="<%= active 'users' %>"><a href="/users">Admin</a></li>
+							<% end %>
+							<li>
+								<% unless session[:user] %>
+									<a href="/sign-in">Sign in</a>
+								<% else %>
+									<a href="/sign-out">Sign out</a>
+								<% end %>
+					    </li>
+		
+		
+		
+		
+					   </ul>
+					 </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="content">
+	    <div class="container">
+	    	
+	    	<%= bootstrap_alert %>
+	    	<%= flash %>
+				<%= yield %>
+				
+				<footer>
+					<p class="pull-right"><i class="icon-user"></i> &nbsp; <%= session[:email] %></p>
+					<p class="pull-left">&copy; 2012 <strong>Career Training Concepts Inc.</strong> &nbsp;  &nbsp; All rights reserved.</p>
+				</footer>
+					
+			</div> <!-- content -->
+		</div> <!-- container -->		
+
+	</body>
+</html>

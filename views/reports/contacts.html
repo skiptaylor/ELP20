@@ -1,0 +1,36 @@
+<tr>
+	<td>
+		<input type="text" class="contact_name" style="width: 90%; margin: 0; font-size: 13px;" name="contacts[<%= index %>][name]" value="<%= contact.name %>" />
+	</td>
+	<td>
+		<select style="width: 100%; font-size: 12px;" name="contacts[<%= index %>][source]">
+			<option value="Phone" <%= 'selected' if contact.source == 'Phone' %>>Phone</option>
+			<option value="Email" <%= 'selected' if contact.source == 'Email' %>>Email</option>
+			<option value="In-person" <%= 'selected' if contact.source == 'In-person' %>>In-person</option>
+			<option value="Referral" <%= 'selected' if contact.source == 'Referral' %>>Referral</option>
+			<option value="Outreach Event" <%= 'selected' if contact.source == 'Outreach Event' %>>Outreach Event</option>
+		</select>
+	</td>
+	<td>
+		<input type="text" style="width: 90%; margin: 0; font-size: 13px;" name="contacts[<%= index %>][title]" value="<%= contact.title %>" />
+	</td>
+	<td>
+		<input type="text" class="input-medium" style="width: 90%; margin: 0; font-size: 13px;" name="contacts[<%= index %>][location]" value="<%= contact.location %>" />
+	</td>
+	
+	<td>
+		<input type="text" class="input-small" style="width: 90%; font-size: 13px;" name="contacts[<%= index %>][phone]" value="<%= contact.phone %>" />
+	</td>
+	<td>
+		<input type="text" class="input-medium" style="width: 90%; font-size: 13px;" name="contacts[<%= index %>][email]" value="<%= contact.email %>" />
+	</td>
+	<td style="padding: 0 5px;">
+		<% if contact.id %>
+		<a href="/vcard/<%= contact.id %>" class="btn btn-mini btn-success" ><i class="icon-download icon-large"></i></a>
+	</td>
+	<td style="text-align: center; line-height: .7em; padding: 0 5px;">
+			<input type="checkbox" class="checkbox" name="contacts[<%= index %>][delete]"><br /><small>delete</small>
+			<input type="hidden" name="contacts[<%= index %>][id]" value="<%= contact.id %>" /> 
+		<% end %>
+	</td>
+</tr>

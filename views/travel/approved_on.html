@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="span12">
+		<h1>Approved Travel</h1>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="span12">
+
+		<form method="get">
+		  <select name="approved_on_date" id="approved_on_date">
+		    <% @approval_dates.each do |d| %>
+		      <% if d %>
+		        <option value='<%= "#{d.year}-#{d.month}-#{d.day}" %>'><%= "#{d.year}-#{d.month}-#{d.day}" %></option>
+		      <% end %>
+		    <% end %>
+		  </select>
+		  <input type="submit" value="Find Reports" class="btn btn-success" />
+		</form>
+
+
+		<table id="approval" class="table table-condensed table-striped table-bordered table-hover approval">
+			<tr>
+				<th style="text-align: center;">#</th>
+				<th>EC Name</th>
+				<th style="text-align: center;">Start Date</th>
+				<th style="text-align: center;">End Date</th>
+				<th>Origin</th>
+				<th>Destination</th>
+				<th>Purpose</th>
+				<th>Cost Item</th>
+				<th style="text-align: center;">Projected</th>
+				<th style="text-align: center;">Trip Cost</th>
+				<th style="text-align: center;">Variance</th>
+			</tr>
+	
+		<form method="post" class="expenseReport">
+	
+			<% @reports.each do |report| %>
+			<tr>
+				<td style="text-align: center;"><a href="/travel/<%= report.id %>/edit"><strong><%= report.id %></strong></td>
+				<td><%= report.user.display_name %> - <%= report.user.state.abbr %></td>
+				<td style="text-align: center;"><%= format_day(report.start_date) %></td>
+				<td style="text-align: center;"><%= format_day(report.end_date) %></td>
+				<td><%= report.origin %></td>
+				<td><%= report.destination %></td>
+				<td><%= report.reason_for_travel %></td>
+				<td><%= report.cost_items_list %></td>
+				<td style="text-align: right;"><%= dollarize(report.total_estimated_cost) %></td>
+				<th style="text-align: right;"><%= dollarize(report.total_cost_of_trip) %></th>
+				<td style="text-align: right;"><%= dollarize(report.variance) %></td>
+			</tr>
+			<% end %>
+			
+		</table>
+			
+		</form>
+		
+	 </div>
+</div>

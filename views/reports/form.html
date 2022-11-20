@@ -1,0 +1,85 @@
+<form method="post" class="report" method="post">
+
+
+	<div class="row">
+		<div class="span12">
+		
+				<% if @report.id %>
+				<a href="/users/<%= params[:user_id] %>/reports/<%= @report.id %>/delete" class="delete btn btn-small btn-danger pull-right"><i class="icon-trash"></i>&nbsp; Delete</a>
+			<% end %>
+		
+			<h1>Activity Report&nbsp;&nbsp;&nbsp;<small><i class="icon-user muted"></i> &nbsp;<%= @report.user.display_name %>&nbsp;-&nbsp;<%= @report.user.state.abbr %></small></h1>
+			<hr />
+				
+			<p class="pull-left spacer">
+				<label for="date">Date:</label>
+				<%= date_to_field('date', @report.date) %>
+			</p>
+	
+			<p class="pull-left spacer">
+				<label for="location">
+					<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Create a new report for each location.">Location/School Name:</a>
+				</label>
+	
+				<input type="text" class="textfield span5" name="school" id="school" value="<%= @report.school %>" />
+				<span class="help-block">Location/School Name limited to 50 characters</span>
+			</p> 
+	
+			<p>
+				<label for="zip">ZIP:</label>
+				<input type="text" class="textfield span2" name="zip" id="zip" value="<%= @report.zip %>" />
+			</p>
+	
+			<p style="clear: both;">
+				<label for="description">
+					<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="You must complete description. Please be as brief and precise as possible.">Description of Activity</a>
+				</label>
+				<textarea name="description" rows="5" id="description" class="span12"><%= @report.description %></textarea>
+			</p>
+			
+		</div>
+	</div>
+
+
+	<p>
+		<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="You may use multiple tabs as needed"><i class="icon-tasks icon-large muted"></i>&nbsp; &nbsp;<strong>Activity:</strong></a>
+	</p>
+	
+	<ul class="nav nav-tabs" id="myTab">
+	  <li class="active"><a href="#sev_pres" data-toggle="tab">Student Activity</a></li>
+	  <li><a href="#meeting" data-toggle="tab">Guard Meeting</a></li>
+		<li><a href="#training" data-toggle="tab">Guard Training</a></li>
+		<li><a href="#outreach" data-toggle="tab">Educator Marketing</a></li>
+	</ul>
+
+
+	<div id="myTabContent" class="tab-content">
+		
+		<div class="tab-pane fade in active" id="sev_pres">
+			<%= erb :'reports/form/sev_pres', layout: false %>
+		</div>
+		
+		<div class="tab-pane fade" id="meeting">
+			<%= erb :'reports/form/meeting', layout: false %>
+		</div>
+	
+		<div class="tab-pane fade" id="training">
+			<%= erb :'reports/form/training', layout: false %>
+		</div>
+	
+		<div class="tab-pane fade" id="outreach">
+			<%= erb :'reports/form/outreach', layout: false %>
+		</div>
+		
+	</div>
+	
+
+	
+	<p style="text-align: center;">
+		<input type="submit" value="Save" class="btn btn-primary" />
+		<!--  <input type="submit" value="Save" class="greenbutton" />  -->
+		&nbsp; 
+		<a href="/users/<%= @report.user_id %>/reports" class="btn" >Cancel</a>
+	</p>
+
+</form>

@@ -1,0 +1,41 @@
+<div class="row">
+	<div class="span12">
+		<h1>Post-travel Reimbursement</h1>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="span12">
+				
+		<p>
+			<label for="hotel">Hotel</label>
+			<input type="text" class="textfield span2" name="hotel" id="hotel" value="<%= @expenseReport.hotel %>" /> 
+		</p>
+		<p>
+			<label for="parking">Parking</label>
+			<input type="text" class="textfield span2" name="airline" id="airline" value="<%= @expenseReport.airline %>" /> 
+		</p>
+		<p>
+			<label for="airline">Airline Ticket</label>
+			<input type="text" class="textfield span2" name="destination" id="destination" value="<%= @expenseReport.destination %>" /> 
+		</p>
+		<p>
+			<label for="meals">Meals</label>
+			<input type="text" class="textfield span2" name="meals" id="meals" value="<%= @expenseReport.meals %>" /> 
+		</p>
+		<p>
+			<label for="car_rental">Car Rental</label>
+			<input type="text" class="textfield span2" name="car_rental" id="car_rental" value="<%= @expenseReport.car_rental %>" /> 
+		</p>
+		<p>
+			<label for="taxi">Taxi/Transit</label>
+			<input type="text" class="textfield span2" name="taxi" id="taxi" value="<%= @expenseReport.taxi %>" /> 
+		</p>
+		<p>
+			<label for="other">Other Misc. - Total if more than one.</label>
+			<input type="text" class="textfield span2" name="other" id="other" value="<%= @expenseReport.other %>" /> 
+		</p>
+
+	</div>
+</div>

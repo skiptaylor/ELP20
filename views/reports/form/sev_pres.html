@@ -1,0 +1,253 @@
+<div class="row-fluid">
+	<div class="span12">
+		<h4>Presentations</h4>
+		<p>Number of SEV presentations coordinated through my efforts.  Of those coordinated, the number of presentations were conducted (or assisted) by:</p>
+	</div>
+</div>
+
+<div class="row-fluid">
+
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="elp_pres">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of presentations made that you coordinated">Just EC</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="elp_pres" class="span2 alrg" name="elp_pres" value="<%= @report.elp_pres %>" />
+			</div>
+		</div>
+	</div>
+
+	<div class="span8">
+		<div class="control-group">
+			<label class="control-label horz span4" for="host_educator">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="If you need to enter more than 50 characters please use the 'Description of Activity' area.">Host Educator Name</a>
+			</label>
+			<div class="controls">
+				<input type="text" class="span7" placeholder="Limit 50 characters" name="host_educator" id="host_educator" value="<%= @report.host_educator %>" />
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row-fluid">
+
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="rrnco_elp_pres">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of presentations made by both RRNCO and EC together">Both RRNCO and EC</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="rrnco_elp_pres" class="span2 alrg" name="rrnco_elp_pres" placeholder="" value="<%= @report.rrnco_elp_pres %>" />
+			</div>
+		</div>
+	</div>
+	
+</div>
+	
+<div class="row-fluid">
+
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="rrnco_pres">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of presentations made - then RRNCO name in box to right">Just RRNCO</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="rrnco_pres" class="span2 alrg" name="rrnco_pres" value="<%= @report.rrnco_pres %>" />
+				<span class="help-inline"> &amp; &rarr;</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="span8">
+		<div class="control-group">
+			<label class="control-label horz span4" for="rrnco_name">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="If you need to enter more than 50 characters please use the 'Description of Activity' area.">RRNCO Presenter Name</a>
+			</label>
+			<div class="controls">
+				<input type="text" class="span7" placeholder="Limit 50 characters" name="rrnco_name" id="rrnco_name" value="<%= @report.rrnco_name %>" <%= 'disabled="true"' if @report.rrnco_pres < 1 %> />
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row-fluid">
+
+	<div class="span12">	
+			<hr />
+		<h4>Number of Students</h4>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="asvab">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of student who took the ASVAB at a test you arranged.">ASVAB Testing</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="asvab" class="span2 alrg" name="asvab" value="<%= @report.asvab %>" />
+			</div>
+		</div>
+	</div>
+	
+	<div class="span6">
+		<span id="asvab_new_exists" <%= hidden unless @report.asvab > 0 %>>	
+			<label class="radio inline">
+	  		<input type="radio" name="asvab_new_exists" value="existing" <%= 'checked' if @report.asvab_new_exists == 'existing' %> />
+	  		<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="Check if testing is at school that has done ASVAB previous in the last SY">Existing</a>
+	  	</label>
+	  	 &nbsp; 
+	  	<label class="radio inline">
+	  		<input type="radio" name="asvab_new_exists" value="new" <%= 'checked' if @report.asvab_new_exists == 'new' %> />
+	  		<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="Check if school had not previously allowed ASVAB in the last SY">New</a>
+	  	</label>	 &nbsp;  <span class="badge badge-warning"> <i class="icon-chevron-left"></i>&nbsp; Required </span>
+  	</span>
+	</div>
+</div>
+<div class="row-fluid">
+
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="asvab_proctored">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Check this box if you or a RRNCO proctored an ASVAB test.">ASVAB Proctored</a>
+			</label>
+			<div class="controls">
+				<input type="checkbox" class="checkbox" name="asvab_proctored" id="asvab_proctored" <%= 'checked' if @report.asvab_proctored %> />
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row-fluid">
+
+	<div class="span12">	
+			<hr />
+		<h4>Number of Students</h4>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="asvab_promo">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated in promotional presentation about benefits of the ASVAB">ASVAB Promo</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="asvab_promo" class="span2 alrg" name="asvab_promo" value="<%= @report.asvab_promo %>" />
+			</div>
+		</div>
+	</div>
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="humvee">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">HUM VEE</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="humvee" class="span2 alrg" name="humvee" value="<%= @report.humvee %>" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="cep">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated in the Career Exploration Program (Post-ASVAB)">CEP</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="cep" class="span2 alrg" name="cep" value="<%= @report.cep %>" />
+			</div>
+		</div>
+	</div>
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="pie">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">PIE</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="pie" class="span2 alrg" name="pie" value="<%= @report.pie %>" />
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="ycsp">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">YCSP</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="ycsp" class="span2 alrg" name="ycsp" value="<%= @report.ycsp %>" />
+			</div>
+		</div>
+	</div>
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="gfc">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">GFC</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="gfc" class="span2 alrg" name="gfc" value="<%= @report.gfc %>" />
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="cd">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">CD</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="cd" class="span2 alrg" name="cd" value="<%= @report.cd %>" />
+			</div>
+		</div>
+	</div>
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="hear">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">H.E.A.R.</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="hear" class="span2 alrg" name="hear" value="<%= @report.hear %>" />
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="hop">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">HOP</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="hop" class="span2 alrg" name="hop" value="<%= @report.hop %>" />
+			</div>
+		</div>
+	</div>
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="other">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated">Other</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="other" class="span2 alrg" name="other" value="<%= @report.other %>" />
+			</div>
+		</div>
+	</div>
+	<div class="span4">
+		<div class="control-group">
+			<label class="control-label horz span8" for="other-activity">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="right" class="tip" data-title="Number of students who participated in non-presentation activity">Other Activity <br />(e.g. school job fair)</a>
+			</label>
+			<div class="controls">
+				<input type="text" id="other_activity" class="span2 alrg" name="other_activity" value="<%= @report.other_activity %>" />
+			</div>
+		</div>
+	</div>
+</div>

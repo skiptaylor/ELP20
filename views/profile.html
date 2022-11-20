@@ -1,0 +1,71 @@
+<div class="row">
+	<div class="span12">
+		<a href="/users/<%= @profile.id %>" class="pull-right btn btn-success" <%= hidden unless (session[:admin]) || (@profile.id == session[:user]) %>><i class="icon-edit"></i></a>
+		<h1><i class="icon-user muted"></i> &nbsp;Profile</h1>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="span2">
+		<img src="/images/users/<%= @profile.id %>.jpg" width="120px" class="corp_pic img-polaroid" />
+	</div>
+	
+	<div class="span4">
+		<br />
+		<h3><%= @profile.display_name %></h3>
+		<small><%= @profile.title %></small>
+		<br /><br />
+		<p>
+			<%= @profile.display_address %>
+		</p>
+		<p>
+			<a href="mailto:<%= @profile.email %>"><%= @profile.email %></a>
+		</p>
+		<p>
+			<%= @profile.phone1 %><br />
+			<%= @profile.phone2 %><br />
+			<%= @profile.phone3 %>
+		</p>
+		<p>
+			<%= @profile.area %>
+		</p>
+		
+	</div>
+	<div class="span6">
+		<br />
+		
+		<H4>Bio</H4>
+		<p>
+			<%= @profile.bio %>
+		</p>
+		<br />
+		<p>
+			<a href="/vcard/user/<%= @profile.id %>" class="btn btn-small">Download all contacts</a>
+			<a href="<%= @profile.linkedin %>" class="pull-right"><img src="/images/linkedin.png" border="0" /></a>
+		</p>
+		<p>
+			<a href="https://exchange.careertrain.com/OWA" target="_blank" class="btn btn-small btn-info"><i class="icon-envelope-alt"></i>&nbsp; &nbsp;Check your CTC email on Outlook Web Access</a>
+		</p>
+
+	</div>	
+</div>
+<br /><br />
+<div class="row">
+	<div class="span12">
+		<div class="well">
+
+		<h3>Instructions</h3>
+		
+		<p>The purpose of this EC Web site is to track your daily activities as an eduCONNECT&trade; representative.</p> 
+
+		<p>You are encouraged to enter your activities daily.</p>
+
+		<p>Definitions of activity categories are displayed when clicking the blue “question marks.” To make the definition disappear, simply click the blue “?” again.</p>
+
+		<p><strong>Note:</strong> Your individual reports along with summary reports of your data will be viewable to your CTC leadership team, your state leadership team, and NGB.</p>
+		
+		<p>888-326-9229</p>
+	
+		</div>
+	</div>
+</div>

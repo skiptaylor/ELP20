@@ -1,0 +1,6 @@
+.DS_Store
+/log/*
+!/log/messages.log
+/data/*.sqlite3
+.bundle/
+

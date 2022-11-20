@@ -1,0 +1,7 @@
+	  <tr data-count="<%= i %>">
+		  <td class="span4"><%= date_to_field_array_hack("trips[#{i}][travel_date", (trip.travel_date || Time.now)) %></td>
+		  <td><input type="text" class="textfield span3" name="trips[<%= i %>][reason_for_travel]" id="trips_<%= i %>_reason_for_travel" value="<%= trip.reason_for_travel %>" /></td>
+		  <td><input type="text" class="textfield span2" name="trips[<%= i %>][departure_address]" id="trips_<%= i %>_departure_address" value="<%= trip.departure_address %>" /></td>
+		  <td><input type="text" class="textfield span2" name="trips[<%= i %>][arrival_address]" id="trips_<%= i %>_arrival_address" value="<%= trip.arrival_address %>" /></td>
+		  <td><input type="text" class="textfield span1" name="trips[<%= i %>][miles]" id="trips_<%= i %>_miles" value="<%= trip.miles %>" /></td>
+	  </tr>

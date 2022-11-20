@@ -1,0 +1,133 @@
+<div class="row">
+	<div class="span12">
+		<h1>User Profile</h1>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="span4">
+
+<form method="post" class="report" method="post" enctype="multipart/form-data">
+	
+		<p>
+			<label for="emp_date">Employee Start Date</label>
+			<%= date_to_field('emp_date', @user.emp_date) %> 
+		</p>
+		<p>
+			<label for="first_name">First</label>
+			<input type="text" class="textfield span4" name="first_name" id="first_name" value="<%= @user.first_name %>" /> 
+		</p>
+		<p>
+			<label for="last_name">Last</label>
+			<input type="text" class="textfield span4" name="last_name" id="last_name" value="<%= @user.last_name %>" /> 
+		</p>
+		<p>
+			<label for="title">Title/Rank</label>
+			<input type="text" class="textfield span4" name="title" id="title" value="<%= @user.title %>" /> 
+		</p>
+		<p <%= hidden unless session[:admin] %>>
+			<label for="email">Email</label>
+			<input type="text" class="textfield span4" name="email" id="email" value="<%= @user.email %>" /> 
+		</p>
+		<p>
+			<label for="password">Password</label>
+			<input type="text" class="textfield span4" name="password" id="password" value="<%= @user.password %>" /> 
+		</p>
+	<p <%= hidden unless session[:admin] %>>
+		<label for="access">Access</label>
+		
+		<label class="checkbox">
+			<input type="checkbox" name="admin" value="admin" <%= 'checked' if @user.admin %>> 
+			Administrator
+		</label>
+		<label class="checkbox">
+			<input type="checkbox" name="educator_liaison" value="educator_liaison" <%= 'checked' if @user.educator_liaison %>> 
+			eduCONNECT&trade; Representative
+		</label>
+		<label class="checkbox" style="margin-left: 32px;">
+			<input type="checkbox" name="regional" value="regional" <%= 'checked' if @user.regional %>> 
+			Regional Leader
+		</label>
+		<label class="checkbox">
+			<input type="checkbox" name="state_customer" value="state_customer" <%= 'checked' if @user.state_customer %>> 
+			State Customer
+		</label>
+		<label class="checkbox">
+			<input type="checkbox" name="ngb_customer" value="ngb_customer" <%= 'checked' if @user.ngb_customer %>> 
+			NGB Customer
+		</label>
+		<label class="checkbox">
+			<input type="checkbox" name="nc_el" value="nc_el" <%= 'checked' if @user.nc_el %>> 
+			North Carolina (contract)
+		</label>
+	</p>	
+	<p>
+		<label for="title">Area</label>
+		<input type="text" class="textfield span4" name="area" id="area" value="<%= @user.area %>" /> 
+	</p>
+
+</div>
+	
+<div class="span4">
+		<p>
+			<label for="phone1">Mobile Phone 1</label>
+			<input type="text" class="textfield span4" name="phone1" id="phone1" value="<%= @user.phone1 %>" /> 
+		</p>
+		<p>
+			<label for="phone2">Mobile Phone 2</label>
+			<input type="text" class="textfield span4" name="phone2" id="phone2" value="<%= @user.phone2 %>" /> 
+		</p>
+		<p>
+			<label for="phone3">Work Phone</label>
+			<input type="text" class="textfield span4" name="phone3" id="phone3" value="<%= @user.phone3 %>" /> 
+		</p>
+		<p>
+			<label for="address1">Address 1</label>
+			<input type="text" class="textfield span4" name="address1" id="address1" value="<%= @user.address1 %>" /> 
+		</p>
+		<p>
+			<label for="address2">Address 2</label>
+			<input type="text" class="textfield span4" name="address2" id="address2" value="<%= @user.address2 %>" /> 
+		</p>
+		<p>
+			<label for="city">City</label>
+			<input type="text" class="textfield span4" name="city" id="city" value="<%= @user.city %>" /> 
+		</p>
+		<p>
+			<label for="state">State</label>
+			<select name="state">
+				<% State.all(:order => :name).each do |state| %>
+				<option value="<%= state.id %>" <%= 'selected' if @user.state_id == state.id %>><%= state.name %></option>
+				<% end %>
+			</select>
+		</p>
+		<p>
+			<label for="zip">ZIP</label>
+			<input type="text" class="textfield span2" name="zip" id="zip" value="<%= @user.zip %>" /> 
+		</p>
+
+</div>
+	
+<div class="span4">
+		<p>
+			<label for="photo">Photo</label>
+			<input class="picload" name="pic" id="pic" type="file" /> <br /><br />
+			<img src="/images/users/<%= @user.id %>.jpg" class="img-polaroid" width="170px" /> 
+		</p>
+		<p>
+			<label for="bio">Bio</label>
+			<textarea name="bio" id="bio" rows="6" class="bio span4"><%= @user.bio %></textarea>
+		</p>
+		<p>
+			<label for="linkedin">linkedin</label>
+			<input type="text" class="textfield span4" name="linkedin" id="linkedin" value="<%= @user.linkedin %>" />
+		</p>
+		<p>
+			<br />
+			<input type="submit" value="Save" class="btn btn-success" /> <a href="/users" class="btn">cancel</a>
+		</p>
+</div>
+
+</form>
+
+</div>

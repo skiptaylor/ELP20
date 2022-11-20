@@ -1,0 +1,101 @@
+<tr>
+	<td colspan="35">
+		<p style="margin-top: 7px;">
+			<span class="label label-inverse"><%= format_day report.date %></span> &nbsp; 
+			<strong><i class="icon-user muted"></i> &nbsp;<%= report.user.display_name %></strong> -  
+			<%= report.user.state.abbr %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<strong>Activity Location:</strong> <%= report.school %>, <%= report.zip %> &nbsp; 
+		</p>
+	</td>
+	<td colspan="1">
+		<p <%= hidden unless show[:edit] %>>
+			<a href="/users/<%= report.user_id %>/reports/<%= report.id %>" class="btn btn-mini pull-right btn-success"><i class="icon-edit"></i></a>
+		</p>		
+	</td>
+</tr>
+
+<tr class="parts">
+		<th align="center">EC<br />Rep<br />Pres</th>
+		<th align="center">RRNCO<br />&amp; EC<br />Pres</th>
+		<th align="center">RR<br />NCO<br />Pres</th>
+		<th align="center">Total</th>
+		<th align="center" class="spacer"> </th>
+		<th align="center">New<br />ASVAB</th>
+		<th align="center">ASVAB<br />Tested</th>
+		<th align="center">ASVAB<br />Proctor</th>
+		<th align="center">ASVAB<br />Promo</th>
+		<th align="center">CEP</th>
+		<th align="center">YCSP</th>
+		<th align="center">CD</th>
+		<th align="center">HOP</th>
+		<th align="center">HUM<br />VEE</th>
+		<th align="center">PIE</th>
+		<th align="center">GFC</th>
+		<th align="center">H.E.A.R.</th>
+		<th align="center">Other<br />Pres</th>
+		<th align="center">Total</th>
+		<th align="center">Other<br />Actv</th>
+		<th align="center" class="spacer"> </th>
+		<th align="center">RRC</th>
+		<th align="center">SGM</th>
+		<th align="center">Team<br />Ldrs</th>
+		<th align="center">RR<br />NCOs</th>
+		<th align="center">ESO</th>
+		<th align="center">OSM</th>
+		<th align="center">MEPS<br />ESS</th>
+		<th align="center" class="spacer"> </th>
+		<th align="center">Number<br />Trained</th>
+		<th align="center" class="spacer"> </th>
+		<th align="center">New<br />Contacts</th>
+		<th align="center">Existing<br />Contacts</th>
+		<th align="center">School<br />Visit<br />Attendees</th>
+		<th align="center">Outreach<br />Event<br />Attendees</th>
+		<th align="center">Conference<br />Attendees</th>
+</tr>
+
+<tr class="values">
+	<td><%= report.elp_pres %></td>
+	<td><%= report.rrnco_elp_pres %></td>
+	<td><%= report.rrnco_pres %></td>
+	<td><%= report.pres_total %></td>
+	<td class="spacer"> </td>
+	<td><%= titleize(report.asvab_new_exists) if report.asvab_new_exists %></td>
+	<td><%= report.asvab %></td>
+	<td><%= report.asvab_proctored ? 'Yes' : 'No' %></td>
+	<td><%= report.asvab_promo %></td>
+	<td><%= report.cep %></td>
+	<td><%= report.ycsp %></td>
+	<td><%= report.cd %></td>
+	<td><%= report.hop %></td>
+	<td><%= report.humvee %></td>
+	<td><%= report.pie %></td>
+	<td><%= report.gfc %></td>
+	<td><%= report.hear %></td>
+	<td><%= report.other %></td>
+	<td><%= report.asvab_promo + report.cep + report.ycsp + report.cd + report.hop + report.humvee + report.pie + report.gfc + report.hear + report.other %></td>
+	<td><%= report.other_activity %></td>
+	<td class="spacer"> </td>
+	<td><%= report.rrc ? 'Yes' : 'No' %></td>
+	<td><%= report.sgm ? 'Yes' : 'No' %></td>
+	<td><%= report.team_leader %></td>
+	<td><%= report.rrnco %></td>
+	<td><%= report.eso ? 'Yes' : 'No' %></td>
+	<td><%= report.osm ? 'Yes' : 'No' %></td>
+	<td><%= report.mep_ess ? 'Yes' : 'No' %></td>
+	<td class="spacer"> </td>
+	<td><%= report.trained %></td>
+	<td class="spacer"> </td>
+	<td><%= report.new_contacts %></td>
+	<td><%= report.existing_contacts %></td>
+	<td><%= report.attendees_visit %></td>
+	<td><%= report.attendees_event %></td>
+	<td><%= report.attendees_conf%></td>
+</tr>
+
+<tr <%= hidden unless show[:description] %>>
+	<td colspan="35">
+
+		<p><b>Description:</b> <%= report.description %></p>
+	</td>
+</tr>
+

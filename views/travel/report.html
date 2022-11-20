@@ -1,0 +1,189 @@
+<div class="row">
+	<div class="span12">
+		<a href="/travel" class="btn btn-success pull-right">Reports List</a>
+		<h1>
+		  Travel Report
+		 </h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+
+<hr style="margin-bottom: 0px;" />
+
+		<p style="font-size: 1em; color: charcoal;"><%= @expense_report.user.display_name %><span class="pull-right">Report Number <%= @expense_report.id %></span></p>
+		<p class="pull-right"><small>Status &nbsp; </small><span class="badge badge-info"><%= @expense_report.status %></span></p>
+	  <p>
+	    <label class="checkbox">
+	      <input name="non_approved_trip" id="non_approved_trip" type="checkbox" <%= 'checked' if @expense_report.non_approved_trip %> /> <strong>Non-forecasted Travel</strong>
+	    </label>
+	  </p>
+		
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+		
+		<table class="table table-striped table-bordered table-hover">
+			<tr style="font-size: .9em;">
+				<th>Travel Start Date</th>
+				<th>Travel End Date</th>
+				<th>Total Travel Days</th>
+			</tr>
+			<tr>
+				<td><%= format_date(@expense_report.start_date) %></td>
+				<td><%= format_date(@expense_report.end_date) %></td>
+				<td><%= @expense_report.total_travel_days %></td>
+			</tr>
+
+			<tr style="font-size: .9em;">
+				<th>Origin <small>City, State</small></th>
+				<th>Destination <small>City, State</small></th>
+				<th>Reason for Travel</th>
+			</tr>
+			<tr>
+				<td><%= @expense_report.origin %></td>
+				<td><%= @expense_report.destination %></td>
+				<td><%= @expense_report.reason_for_travel %></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="span12">	
+		<hr class="thick" />
+		<h2 class="bree">Pre-travel Authorization</h2>
+
+		<table class="table table-striped table-bordered table-hover">
+			<tr style="font-size: .9em;">
+				<th>Hotel Per Diem</th>
+				<th>Meals and Incidental</th>
+				<th>Rates per day</th>
+				<th>Total trip per diem</th>
+			</tr>
+			<tr>
+				<td style="text-align: center;"><%= truncate_number(@expense_report.est_hotel) %></td>
+				<td style="text-align: center;"><%= truncate_number(@expense_report.est_meals_and_misc) %></td>
+				<td style="text-align: center;"><%= dollarize(@expense_report.est_rate_per_day) %></td>
+				<td style="text-align: center;"><%= dollarize(@expense_report.est_trip_per_diem) %></td>
+			</tr>
+		</table>
+	</div>
+	<div class="span12">
+		<h4>Estimate of additional cost</h4>
+		
+		<table class="table table-striped table-bordered table-hover">
+			<tr style="font-size: .9em;">
+				<th>GSA Car</th>
+				<th>Projected Miles</th>
+				<th>Taxi/Transit</th>
+				<th>Airline Ticket Cost</th>
+				<th>Parking Cost</th>
+				<th>Car Rental Cost</th>
+				<th>Misc. Cost</th>
+				<th>Misc. Cost</th>
+			</tr>
+			<tr>
+				<td><label class="checkbox"><input type="checkbox" name="est_gsa_car" id="est_gsa_car" <%= 'checked="checked"' if @expense_report.est_gsa_car  %> /><strong>GSA Car</strong></label></td>
+				<td style="text-align: center;"><%= truncate_number(@expense_report.est_mileage) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.est_transit) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.est_airline_ticket) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.est_parking) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.est_car_rental) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.est_misc) %></td>
+				<th style="text-align: right;"><%= dollarize(@expense_report.total_estimated_cost) %></th>
+			</tr>
+		</table>
+				
+
+	
+	</div>
+
+</div>
+
+	
+<hr class="thick" />
+
+<div class="row">
+	<div class="span12">
+
+		<h2 class="bree">Post-Travel Reimbursement</h2>
+
+		<h4>Trip segments</h4>
+		<% i = 0 %>
+		<% @expense_report.trips.each do |trip| %>
+		  <%= erb :'expense_reports/trip', layout: false, locals: { trip: trip, i: i } %>
+		  <% i = i + 1 %>
+		<% end %>
+
+		<% (3 - @expense_report.trips.count).times do |trip| %>
+		  <%= erb :'expense_reports/trip', layout: false, locals: { trip: Trip.new, i: i } %>
+		  <% i = i + 1 %>
+		<% end %>
+
+	<div class="well well-small" style="display: inline-block;">	
+		<p class="span3">
+			<label class="short" for="total_pov_mileage">Total POV Mileage</label>
+			<span class="totals"><%= @expense_report.total_pov_mileage %></span> 
+		</p>
+		<p class="span4">
+			
+			<label class="short" for="commuter_mileage">
+				<a href="#" rel="tooltip" data-trigger="hover" data-placement="top" class="tip" data-title="See 'Reimbursement Clarifications' and 'Commuter Mileage Examples' Below">Commuter Mileage</a>
+			</label>
+			
+			<input type="text" class="textfield input-small" name="commuter_mileage" id="commuter_mileage" value="<%= @expense_report.commuter_mileage %>" />
+		</p>
+		<p class="span4">
+			<label class="short" for="mileage_reimbursement">Mileage Reimbursement</label>
+			<span class="totals"><%= dollarize(@expense_report.mileage_reimbursement) %></span>
+		</p>
+	</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+		<table class="table table-striped table-bordered table-hover">
+			<tr style="font-size: .9em;">
+				<th>GSA Car</th>
+				<th>Hotel</th>
+				<th>Meals</th>
+				<th>Taxi/Transit</th>
+				<th>Airline Ticket</th>
+				<th>Parking</th>
+				<th>Car Rental</th>
+				<th>Misc.</th>
+			</tr>
+			<tr>
+				<td><label class="checkbox"><input type="checkbox" name="est_gsa_car" id="est_gsa_car" <%= 'checked="checked"' if @expense_report.est_gsa_car  %> /><strong>GSA Car</strong></label></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.hotel) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.meals_and_misc) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.transit) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.airline_ticket) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.parking) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.car_rental) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.misc) %></td>
+			</tr>
+			<tr style="font-size: .9em;">
+				<th>Due Employee</th>
+				<th>CTC Pre-paid</th>
+				<th>Total Cost of Trip</th>
+				<th>Cash Advance</th>
+				<th>Reimbursement Due</th>
+				<th colspan="2">Description</th>
+				<th>Cost Variance</th>
+			</tr>
+			<tr>
+				<td style="text-align: right;"><%= dollarize(@expense_report.due_employee) %></td>
+				<td style="text-align: right;"><%= dollarize(@expense_report.ctc_prepaid) %></td>
+				<td style="text-align: right;"><%= dollarize(@expense_report.total_cost_of_trip) %></td>
+				<td style="text-align: right;"><%= truncate_number(@expense_report.cash_advance) %></td>
+				<td style="text-align: right;"><%= dollarize(@expense_report.total_reembursement_due) %></td>
+				<td colspan="2"><%= @expense_report.comments %></td>
+				<td style="text-align: right;"><%= dollarize(@expense_report.variance) %></td>
+			</tr>
+		</table>
+	</div>
+	
+</div>

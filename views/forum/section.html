@@ -1,0 +1,41 @@
+<div class="row">
+	<div class="span12">
+		<h1><i class="icon-bullhorn muted"></i> &nbsp;eduCONNECT&trade; Forum</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
+
+		<%= erb :'forum/tabs', :layout => false, :locals => {:current_tab => 'Instructions'} %>
+
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+		<div class="row">
+			<div class="span3">
+				<p><a href="#" id="new-topic-btn" class="btn btn-small btn-success"><New topic>New Topic</a></p>
+			</div>
+			<div class="span9">	
+				<form method="post" action="/forum/topic" id="new-topic" style="display: none;">
+					<p>
+						<label for="title">New Topic</label>
+						<input type="text" name="title" id="topic_title" class="textfield span9" />
+					</p>
+					<p><textarea name="description" id="description" class="span9" rows="16"></textarea></p>
+					<input type="hidden" name="section" value="<%= params[:name] %>" />
+					<p><input type="submit" class="btn btn-small btn-success" value="Submit Topic" /></p>
+				</form>
+			
+				<% @topics.each do |topic| %>
+					<a href="/forum/topic/<%= topic.id %>/delete" class="delete btn btn-mini pull-right" <%= hidden unless session[:admin] || topic.user_id == session[:user] %>>delete</a>
+					<h5 style="margin-bottom: 0;"><a href="/forum/topic/<%= topic.id %>"><%= topic.title %></a></h5>
+					<p class="muted"><small>Created by <b><%= topic.user.display_name %>, <%= topic.user.state.abbr %></b>. Last updated on <strong><%= format_day topic.updated_at %></strong></small></p>
+					<hr class="nospace" />
+				<% end %>	
+			</div>	
+		</div>
+	</div>
+</div>
+

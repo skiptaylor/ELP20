@@ -1,0 +1,28 @@
+<a href="/home" <%= active 'home' %>>Home</a>
+<% unless session[:user] %>
+	<a href="/personnel" <%= active 'personnel' %>>Personnel Services</a>
+	<a href="/training" <%= active 'training' %>>Training</a>
+	<a href="/publications" <%= active 'publications' %>>Publications</a>
+	<a href="/corporate" <%= active 'corporate' %>>Corporate Team</a>
+	<a href="/careers" <%= active 'careers' %>>Careers</a>
+<% end %>
+<% unless request.url.include? 'http://okelp.com' %>
+	<a href="/elp" <%= active 'elp' %>>eduCONNECT representative</a>
+<% end %>
+<% unless session[:user] %>
+	<a href="/gsa" <%= active 'gsa' %>>GSA</a>
+	<a href="/partners" <%= active 'partners' %>>Partners</a>
+	<a href="/contact" <%= active 'contact' %>>Contact</a>
+<% end %>
+<% if session[:user] %>
+	<a href="/users/<%= session[:user] %>/reports" <%= active 'reports' %>>Activities</a>
+	<% unless request.url.include? 'http://okelp.com' %>
+		<a href="/forum/instructions" <%= active 'forum' %>>Forum</a>
+		<a href="/downloads" <%= active 'downloads' %>>Downloads</a>
+	<% end %>
+	<a href="/profile" <%= active 'profile' %>>Profile</a>
+<% end %>
+<% if session[:admin] || session[:ngb_customer] || session[:regional] || session[:state_customer] %>
+	<a href="/expense_reports/dashboard">Travel</a>
+	<a href="/users">Admin</a>
+<% end %>

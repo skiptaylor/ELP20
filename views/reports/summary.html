@@ -1,0 +1,473 @@
+<div class="row">	
+	<div class="span8">
+	
+		<img src="/images/arng_rgb_color.png" class="pull-left" style="padding-right: 24px; width: 60px;" />
+		<h2>eduCONNECT&trade; Program<br />Group Summary</h2>
+			
+	</div>
+	<div class="span4">
+
+		<a href="/users/" class="btn btn-success btn-small pull-right">Back</a>
+
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+
+	<% if request.path_info.include? "custom_summary" %>
+		<form method="post" style="float: right;">
+			<strong>Start:</strong> <%= date_to_field('start', Chronic.parse(params[:start_date])) %>
+			 &nbsp; &nbsp; 
+			<strong>End:</strong> <%= date_to_field('end', Chronic.parse(params[:end_date])) %>
+			 &nbsp; &nbsp; 
+			<input type="submit" value="Generate" class="btn btn-success" />
+		</form>
+	<% else %>
+		<form method="post" class="pull-right">
+			<select name="new_month" style="width: 130px;">
+				<option value="january" <%= 'selected' if params[:month] == 'january' %>>January</option>
+				<option value="february" <%= 'selected' if params[:month] == 'february' %>>February</option>
+				<option value="march" <%= 'selected' if params[:month] == 'march' %>>March</option>
+				<option value="april" <%= 'selected' if params[:month] == 'april' %>>April</option>
+				<option value="may" <%= 'selected' if params[:month] == 'may' %>>May</option>
+				<option value="june" <%= 'selected' if params[:month] == 'june' %>>June</option>
+				<option value="july" <%= 'selected' if params[:month] == 'july' %>>July</option>
+				<option value="august" <%= 'selected' if params[:month] == 'august' %>>August</option>
+				<option value="september" <%= 'selected' if params[:month] == 'september' %>>September</option>
+				<option value="october" <%= 'selected' if params[:month] == 'october' %>>October</option>
+				<option value="november" <%= 'selected' if params[:month] == 'november' %>>November</option>
+				<option value="december" <%= 'selected' if params[:month] == 'december' %>>December</option>
+			</select>
+			<select name="new_year" style="width: 90px;">
+				<% for y in Chronic.parse(Report.first(:order => :date.asc).date).year..Time.now.strftime("%Y").to_i do %>
+					<option value="<%= y %>" <%= 'selected' if params[:year] == y.to_s %>><%= y %></option>
+				<% end %>
+			</select>
+			<input type="submit" value="Switch" class="btn btn-success" />
+		</form>
+	<% end %>
+	
+
+
+	<table class="reporttable">
+		<tr class="sections">
+			<th colspan="20" align="center">Student Activity</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="7" align="center">Guard Meeting</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="1" align="center">Guard<br />Training</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="5" align="center">Educator Marketing</th>
+		</tr>
+		<tr class="parts">
+			<th align="center">EC<br />Rep<br />Pres</th>
+			<th align="center">RRNCO<br />&amp; EC<br />Pres</th>
+			<th align="center">RR<br />NCO<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">New<br />ASVAB</th>
+			<th align="center">ASVAB<br />Tested</th>
+			<th align="center">ASVAB<br />Proctor</th>
+			<th align="center">ASVAB<br />Promo</th>
+			<th align="center">CEP</th>
+			<th align="center">YCSP</th>
+			<th align="center">CD</th>
+			<th align="center">HOP</th>
+			<th align="center">HUM<br />VEE</th>
+			<th align="center">PIE</th>
+			<th align="center">GFC</th>
+			<th align="center">H.E.A.R.</th>
+			<th align="center">Other<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center">Other<br />Actv</th>
+			
+			<th align="center">RRC</th>
+			<th align="center">SGM</th>
+			<th align="center">Team<br />Ldrs</th>
+			<th align="center">RR<br />NCOs</th>
+			<th align="center">ESO</th>
+			<th align="center">OSM</th>
+			<th align="center">MEPS<br />ESS</th>
+			
+			<th align="center">Number<br />Trained</th>
+			
+			<th align="center">New<br />Contacts</th>
+			<th align="center">Existing<br />Contacts</th>
+			<th align="center">School<br />Visit<br />Attendees</th>
+			<th align="center">Outreach<br />Event<br />Attendees</th>
+			<th align="center">Conference<br />Attendees</th>
+		</tr>		
+		
+		<tr class="separator" <%= hidden if request.path_info.include? "custom_summary" %>>
+			<th colspan="36">STANDARD</th>
+		</tr>
+		<tr class="standards"<%= hidden if request.path_info.include? "custom_summary" %>>
+			<td colspan="2" align="center"><%= settings.monthly_avg[:elp_pres] %></td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td class="spacer"> </td>
+			<td><%= settings.monthly_avg[:asvab_new_exists] %></td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td class="spacer"> </td>
+			<td><%= settings.monthly_avg[:rrc] %></td>
+			<td><%= settings.monthly_avg[:sgm] %></td>
+			<td><%= settings.monthly_avg[:team_leader] %></td>
+			<td>&#8211;</td>
+			<td><%= settings.monthly_avg[:eso] %></td>
+			<td>&#8211;</td>
+			<td><%= settings.monthly_avg[:mep_ess] %></td>
+			<td class="spacer"> </td>
+			<td>&#8211;</td>
+			<td class="spacer"> </td>
+			<td><%= settings.monthly_avg[:new_contacts] %></td>
+			<td><%= settings.monthly_avg[:existing_contacts] %></td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+			<td>&#8211;</td>
+		</tr>
+		
+		<tr class="separator">
+			<th colspan="36">EDUCATION LIAISON TOTALS FOR PERIOD</th>
+		</tr>
+		<%
+		rrnco_pres_cat_total 		= 0
+		elp_pres_cat_total 			= 0
+		rrnco_elp_pres_cat_total = 0
+		asvab_new_exists_cat_total 	= 0
+		asvab_cat_total 			= 0
+		asvab_proctored_cat_total 	= 0
+		asvab_promo_cat_total 		= 0
+		cep_cat_total 				= 0
+		ycsp_cat_total 				= 0
+		cd_cat_total 				= 0
+		hop_cat_total 				= 0
+		humvee_cat_total 			= 0
+		pie_cat_total 				= 0
+		gfc_cat_total 				= 0
+		hear_cat_total 				= 0
+		other_cat_total 			= 0
+		school_entry_cat_total		= 0
+		other_activity_cat_total = 0
+		rrc_cat_total 				= 0
+		sgm_cat_total 				= 0
+		team_leader_cat_total 		= 0
+		rrnco_cat_total 			= 0
+		eso_cat_total 				= 0
+		osm_cat_total 				= 0
+		mep_ess_cat_total			= 0
+		trained_cat_total 			= 0
+		new_contacts_cat_total 		= 0
+		existing_contacts_cat_total = 0
+		attendees_visit_cat_total 	= 0
+		attendees_event_cat_total 	= 0
+		attendees_conf_cat_total 	= 0
+		%>
+		
+		<% user_count = 0 %>
+		
+		<% @reports.sort{|a, b| a.user.state.abbr <=> b.user.state.abbr}.group_by(&:user_id).each do |user_id, reports| %>
+		
+		<% if user_count == 6 %>
+		<tr class="parts">
+			<th align="center">EC<br />Rep<br />Pres</th>
+			<th align="center">RRNCO<br />&amp; EC<br />Pres</th>
+			<th align="center">RR<br />NCO<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">New<br />ASVAB</th>
+			<th align="center">ASVAB<br />Tested</th>
+			<th align="center">ASVAB<br />Proctor</th>
+			<th align="center">ASVAB<br />Promo</th>
+			<th align="center">CEP</th>
+			<th align="center">YCSP</th>
+			<th align="center">CD</th>
+			<th align="center">HOP</th>
+			<th align="center">HUM<br />VEE</th>
+			<th align="center">PIE</th>
+			<th align="center">GFC</th>
+			<th align="center">H.E.A.R.</th>
+			<th align="center">Other<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center">Other<br />Actv</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">RRC</th>
+			<th align="center">SGM</th>
+			<th align="center">Team<br />Ldrs</th>
+			<th align="center">RR<br />NCOs</th>
+			<th align="center">ESO</th>
+			<th align="center">OSM</th>
+			<th align="center">MEPS<br />ESS</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">Number<br />Trained</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">New<br />Contacts</th>
+			<th align="center">Existing<br />Contacts</th>
+			<th align="center">School<br />Visit<br />Attendees</th>
+			<th align="center">Outreach<br />Event<br />Attendees</th>
+			<th align="center">Conference<br />Attendees</th>
+		</tr>
+		<% end %>
+		<% user_count < 6 ? user_count = user_count + 1 : user_count = 1 %>
+		
+		<% user = User.get(user_id) %>
+		<tr class="standardsleft">
+			<th colspan="36"><%= user.state.abbr %> - <%= user.display_name %></th>
+		</tr>
+		<%
+		elp_pres_total 			= 0
+		rrnco_elp_pres_total = 0
+		rrnco_pres_total 		= 0
+		
+		asvab_new_exists_total 	= 0
+		asvab_total 			= 0
+		asvab_proctored_total 	= 0
+		asvab_promo_total 		= 0
+		cep_total 				= 0
+		ycsp_total 				= 0
+		cd_total 				= 0
+		hop_total 				= 0
+		humvee_total 			= 0
+		pie_total 				= 0
+		gfc_total 				= 0
+		hear_total 				= 0
+		other_total 			= 0
+		school_entry_total		= 0
+		other_activity_total = 0
+		rrc_total 				= 0
+		sgm_total 				= 0
+		team_leader_total 		= 0
+		rrnco_total 			= 0
+		eso_total 				= 0
+		osm_total 				= 0
+		mep_ess_total			= 0
+		trained_total 			= 0
+		new_contacts_total 		= 0
+		existing_contacts_total = 0
+		attendees_visit_total 	= 0
+		attendees_event_total 	= 0
+		attendees_conf_total 	= 0
+		    
+		reports.each do |r|
+			elp_pres_total += r.elp_pres
+			rrnco_elp_pres_total += r.rrnco_elp_pres
+			rrnco_pres_total += r.rrnco_pres
+			
+			asvab_new_exists_total += 1 if r.asvab_new_exists == 'new'
+			asvab_total += r.asvab
+			asvab_proctored_total += 1 if r.asvab_proctored?
+			asvab_promo_total += r.asvab_promo
+			cep_total += r.cep
+			ycsp_total += r.ycsp
+			cd_total += r.cd
+			hop_total += r.hop
+			humvee_total += r.humvee
+			pie_total += r.pie
+			gfc_total += r.gfc
+			hear_total += r.hear
+			other_total += r.other
+			school_entry_total = asvab_promo_total + cep_total + ycsp_total + cd_total + hop_total + humvee_total + pie_total + gfc_total + hear_total + other_total
+			other_activity_total += r.other_activity
+			rrc_total += 1 if r.rrc?
+			sgm_total += 1 if r.sgm?
+			team_leader_total += r.team_leader
+			rrnco_total += r.rrnco
+			eso_total += 1 if r.eso?
+			osm_total += 1 if r.osm?
+			mep_ess_total += 1 if r.mep_ess?
+			trained_total += r.trained
+			new_contacts_total += r.new_contacts
+			existing_contacts_total += r.existing_contacts
+			attendees_visit_total += r.attendees_visit
+			attendees_event_total += r.attendees_event
+			attendees_conf_total += r.attendees_conf
+		end
+		%>
+		<tr class="values">
+			<td><%= elp_pres_total %></td>
+			<td><%= rrnco_elp_pres_total %></td>
+			<td><%= rrnco_pres_total %></td>
+			
+			<td><%= elp_pres_total + rrnco_elp_pres_total + rrnco_pres_total %></td>
+			
+			<td class="spacer"> </td>
+			<td><%= asvab_new_exists_total %></td>
+			<td><%= asvab_total %></td>
+			<td><%= asvab_proctored_total %></td>
+			<td><%= asvab_promo_total %></td>
+			<td><%= cep_total %></td>
+			<td><%= ycsp_total %></td>
+			<td><%= cd_total %></td>
+			<td><%= hop_total %></td>
+			<td><%= humvee_total %></td>
+			<td><%= pie_total %></td>
+			<td><%= gfc_total %></td>
+			<td><%= hear_total %></td>
+			<td><%= other_total %></td>
+			<td><%= school_entry_total %></td>
+			<td><%= other_activity_total %></td>
+			<td class="spacer"> </td>
+			<td><%= rrc_total %></td>
+			<td><%= sgm_total %></td>
+			<td><%= team_leader_total %></td>
+			<td><%= rrnco_total %></td>
+			<td><%= eso_total %></td>
+			<td><%= osm_total %></td>
+			<td><%= mep_ess_total %></td>
+			<td class="spacer"> </td>
+			<td><%= trained_total %></td>
+			<td class="spacer"> </td>
+			<td><%= new_contacts_total %></td>
+			<td><%= existing_contacts_total %></td>
+			<td><%= attendees_visit_total %></td>
+			<td><%= attendees_event_total %></td>
+			<td><%= attendees_conf_total %></td>
+		</tr>
+		
+		<%
+		elp_pres_cat_total 					+= elp_pres_total
+		rrnco_elp_pres_cat_total		+= rrnco_elp_pres_total
+		rrnco_pres_cat_total 				+= rrnco_pres_total
+
+		asvab_new_exists_cat_total	+= asvab_new_exists_total
+		asvab_cat_total 						+= asvab_total
+		asvab_proctored_cat_total 	+= asvab_proctored_total
+		asvab_promo_cat_total 			+= asvab_promo_total
+		cep_cat_total 							+= cep_total
+		ycsp_cat_total 							+= ycsp_total
+		cd_cat_total 								+= cd_total
+		hop_cat_total 							+= hop_total
+		humvee_cat_total 						+= humvee_total
+		pie_cat_total 							+= pie_total
+		gfc_cat_total 							+= gfc_total
+		hear_cat_total 							+= hear_total
+		other_cat_total 						+= other_total
+		school_entry_cat_total			+= school_entry_total
+		other_activity_cat_total		+= other_activity_total
+		rrc_cat_total 							+= rrc_total
+		sgm_cat_total 							+= sgm_total
+		team_leader_cat_total 			+= team_leader_total
+		rrnco_cat_total 						+= rrnco_total
+		eso_cat_total 							+= eso_total
+		osm_cat_total 							+= osm_total
+		mep_ess_cat_total						+= mep_ess_total
+		trained_cat_total 					+= trained_total
+		new_contacts_cat_total 			+= new_contacts_total
+		existing_contacts_cat_total += existing_contacts_total
+		attendees_visit_cat_total 	+= attendees_visit_total
+		attendees_event_cat_total 	+= attendees_event_total
+		attendees_conf_cat_total 		+= attendees_conf_total
+		%>
+		
+		<% end %>
+	
+
+		<tr class="separator">
+			<th colspan="36">CATEGORY TOTALS</th>
+		</tr>
+		<tr class="values">
+			<td><%= elp_pres_cat_total %></td>
+			<td><%= rrnco_elp_pres_cat_total %></td>
+			<td><%= rrnco_pres_cat_total %></td>
+			
+			<td><%= elp_pres_cat_total + rrnco_elp_pres_cat_total + rrnco_pres_cat_total %></td>
+			
+			<td class="spacer"> </td>
+			<td><%= asvab_new_exists_cat_total %></td>
+			<td><%= asvab_cat_total %></td>
+			<td><%= asvab_proctored_cat_total %></td>
+			<td><%= asvab_promo_cat_total %></td>
+			<td><%= cep_cat_total %></td>
+			<td><%= ycsp_cat_total %></td>
+			<td><%= cd_cat_total %></td>
+			<td><%= hop_cat_total %></td>
+			<td><%= humvee_cat_total %></td>
+			<td><%= pie_cat_total %></td>
+			<td><%= gfc_cat_total %></td>
+			<td><%= hear_cat_total %></td>
+			<td><%= other_cat_total %></td>
+			<td><%= school_entry_cat_total %></td>
+			<td><%= other_activity_cat_total %></td>
+			<td class="spacer"> </td>
+			<td><%= rrc_cat_total %></td>
+			<td><%= sgm_cat_total %></td>
+			<td><%= team_leader_cat_total %></td>
+			<td><%= rrnco_cat_total %></td>
+			<td><%= eso_cat_total %></td>
+			<td><%= osm_cat_total %></td>
+			<td><%= mep_ess_cat_total %></td>
+			<td class="spacer"> </td>
+			<td><%= trained_cat_total %></td>
+			<td class="spacer"> </td>
+			<td><%= new_contacts_cat_total %></td>
+			<td><%= existing_contacts_cat_total %></td>
+			<td><%= attendees_visit_cat_total %></td>
+			<td><%= attendees_event_cat_total %></td>
+			<td><%= attendees_conf_cat_total %></td>
+		</tr>
+		
+		
+		<tr class="parts">
+			<th align="center">EC<br />Rep<br />Pres</th>
+			<th align="center">RRNCO<br />&amp; EC<br />Pres</th>
+			<th align="center">RR<br />NCO<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">New<br />ASVAB</th>
+			<th align="center">ASVAB<br />Tested</th>
+			<th align="center">ASVAB<br />Proctor</th>
+			<th align="center">ASVAB<br />Promo</th>
+			<th align="center">CEP</th>
+			<th align="center">YCSP</th>
+			<th align="center">CD</th>
+			<th align="center">HOP</th>
+			<th align="center">HUM<br />VEE</th>
+			<th align="center">PIE</th>
+			<th align="center">GFC</th>
+			<th align="center">H.E.A.R.</th>
+			<th align="center">Other<br />Pres</th>
+			<th align="center">Total</th>
+			<th align="center">Other<br />Actv</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">RRC</th>
+			<th align="center">SGM</th>
+			<th align="center">Team<br />Ldrs</th>
+			<th align="center">RR<br />NCOs</th>
+			<th align="center">ESO</th>
+			<th align="center">OSM</th>
+			<th align="center">MEPS<br />ESS</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">Number<br />Trained</th>
+			<th align="center" class="spacer"> </th>
+			<th align="center">New<br />Contacts</th>
+			<th align="center">Existing<br />Contacts</th>
+			<th align="center">School<br />Visit<br />Attendees</th>
+			<th align="center">Outreach<br />Event<br />Attendees</th>
+			<th align="center">Conference<br />Attendees</th>
+		</tr>	
+		<tr class="sections">
+			<th colspan="20" align="center">Student Activity</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="7" align="center">Guard Meeting</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="1" align="center">Guard<br />Training</th>
+			<th rowspan="2" class="spacer"> </th>
+			<th colspan="5" align="center">Educator Marketing</th>
+		</tr>
+				
+	</table>
+	
+	</div>
+</div>

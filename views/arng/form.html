@@ -1,0 +1,84 @@
+<form method="post" id="eform" action="/arng">
+	<div class="round-corners img-border" style="background-color: #f2f2f2; padding: 12px;">
+		<h4 style="color: #a72600; text-align: center;">Request more information</h4>
+		<label for="name">Name<span class="text-error">*</span></label>
+		<input type="text" class="textfield" style="width: 95%; margin-bottom: 9px;" name="name" id="name" value="" />
+		<label for="school">School<span class="text-error">*</span></label>
+		<input type="text" class="textfield" style="width: 95%; margin-bottom: 9px;" name="school" id="school" value="" />
+		<label for="email">Email<span class="text-error">*</span></label>
+		<input type="text" class="textfield" style="width: 95%; margin-bottom: 9px;" name="email" id="email" value="" />
+		<label for="phone">Phone<span class="text-error">*</span></label>
+		<input type="text" class="textfield" style="width: 95%; margin-bottom: 9px;" name="phone" id="phone" value="" />
+		<label for="city">City<span class="text-error">*</span></label>
+		<input type="text" class="textfield" style="width: 95%; margin-bottom: 9px;" name="city" id="city" value="" />
+		<label for="state">State<span class="text-error">*</span></label>
+		<select name="state">
+			<% State.all(:order => :name).each do |state| %>
+				<option value="<%= state.id %>"><%= state.name %></option>
+			<% end %>
+		</select>
+		&nbsp;<input type="text" class="textfield" style="width: 26%; margin-top: 0px;" name="zip" id="zip" placeholder="Zip" value="" />
+		
+		<label for="email_name" style="margin-left: -2017px;">Email Name</label>
+		<input type="text" class="textfield" style="width: 95%; margin-bottom: 9px; margin-left: -2017px;" name="email_name" id="email_name" />
+		
+		
+		<br />
+		<p style="margin-top: -64px;">&nbsp;&nbsp;&nbsp;<span class="text-error">*</span><small>Required</small></p>
+		<label for="program" style="line-height: 2em;">Which Program</label>
+			<label class="checkbox">
+				<input type="checkbox" name="hear" value="HEAR"> H&middot;E&middot;A&middot;R
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="youcan" value="You Can"> YOU CAN School Program
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="guardfit" value="Guard Fit"> Guard Fit Challenge
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="cd2" value="CD2"> Career Direction 2
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="humvee" value="HUMVEE"> HUMVEE School Program
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" name="hop" value="HOP"> Heritage Outreach Program
+			</label>
+			<!-- <input type="hidden" class="textfield" name="town" id="town" value="" /> -->
+			<br />
+			
+			<!-- <div class="g-recaptcha" data-sitekey="6LfnbXQUAAAAACs75kt6m_bNEFrpYzK5JoCPkY7o" data-callback="enableBtn"></div> -->		  
+			
+		<p style="margin-top: -30px;"><br />
+			<input type="submit" id="submit" value="Submit" class="btn btn-success" disabled /> &nbsp;&nbsp;&nbsp;<small>You must select a program.</small>
+		</p>
+		
+	</div>
+</form>
+
+<script>
+	var checkboxes = $("input[type='checkbox']"),
+	    submitButt = $("input[type='submit']");
+
+	checkboxes.click(function() {
+	    submitButt.attr("disabled", !checkboxes.is(":checked"));
+	});
+</script>
+
+<script>
+	document.ready(function() {
+		$("eform").submit(function() {
+			$("#email_name").val('');
+		});
+	});
+</script>
+
+	
+	<!-- <script>
+		document.getElementById("submit").disabled = true;
+		function enableBtn(){
+			document.getElementById("submit").disabled = false;
+		}
+	</script> -->
+		
+		

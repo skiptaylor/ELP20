@@ -1,0 +1,71 @@
+<div class="row">	
+	<div class="span7">
+	
+		<img src="/images/arng_rgb_color.png" class="pull-left" style="padding-right: 24px; width: 60px;" />
+		<h2>New ASVAB Summary</h2>
+			
+	</div>
+	<div class="span5">	
+		
+	<a href="/users/" class="btn btn-success btn-small pull-right">Back</a>
+
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+		
+		<form method="get" style="text-align: right;">
+			<strong>Start:</strong> &nbsp; <%= date_to_field 'start', @start %>
+			&nbsp; &nbsp; &nbsp;
+			<strong>End:</strong> &nbsp; <%= date_to_field 'end', @end %>
+			&nbsp; &nbsp;
+			<input type="submit" value="Find" class="btn btn-success" />
+			&nbsp;
+			<a href="/reports/asvab" class="btn">reset</a>
+		</form>
+		
+		<p>
+		<small>Total students:</small> &nbsp; <span class="label label-inverse"> <%= @total_students %></span>
+		&nbsp; &nbsp; &nbsp;
+		<small>Number of schools:</small> &nbsp; <span class="label label-inverse"> <%= @total_schools %></span>
+		 &nbsp; &nbsp; 
+		<% if params.count > 0 %>
+			<a href="<%= request.url %>&csv=true" class="btn btn-mini">Download CSV</a>
+		<% else %>
+			<a href="<%= request.url %>?csv=true" class="btn btn-mini">Download CSV</a>
+		<% end %>
+	</p>
+
+
+		<table class="table table-condensed table-striped table-hover">
+			
+			<tr class="success">
+				<th align="left">ASVAB Students</th>
+				<th align="left">School</th>
+				<th align="left">Date</th>
+				<th align="left">EC Name</th>
+				<th align="left">State</th>
+			</tr>
+		
+			<%
+				Fixnum.class_eval { def even?; self%2 == 0; end }
+				row_id = 0
+			%>	
+			<% @reports.each do |r| %>
+			<%
+				row_id = row_id + 1
+				row_id.even? ? row_class = 'even' : row_class = 'odd'
+			%>
+			<tr class="<%= row_class %>">
+				<td><%= r.asvab %></td>
+				<td><%= r.school %></td>
+				<td><%= format_american_day r.date %></td>
+				<td><%= r.user.first_name %> <%= r.user.last_name %></td>
+				<td><%= r.user.state.abbr %></td>
+			</tr>
+			<% end %>
+			
+		</table>
+
+	</div>
+</div>

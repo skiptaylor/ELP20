@@ -1,0 +1,36 @@
+<div class="row">
+	<div class="span12">
+		<h1>Pre-travel Authorization</h1>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="span8">
+		
+		
+
+<form method="post" class="report" method="post" enctype="multipart/form-data">
+	<p>
+		<label for="destination">destination</label>
+		<%= @expense_report.destination %>
+	</p>
+		
+		<p>
+			<label for="start_date">Start Date</label>
+			<input type="text" class="textfield span2" name="start_date" id="start_date" value="<%= @start_date %>" /> 
+		</p>
+		<p>
+			<label for="end_date">End Date</label>
+			<input type="text" class="textfield span2" name="end_date" id="end_date" value="<%= @end_date %>" /> 
+		</p>
+		
+		<p>
+			<label for="total_days">Total travel days</label>
+			<%= @total_travel_days %> 
+		</p>
+		
+		<input type="submit" value="Save" class="btn btn-success" />
+</form>		
+	</div>
+</div>
