@@ -49,7 +49,7 @@
 
   gem 'vcard', '~> 0.2.8'
   
-  # gem 'rack-recaptcha', require: 'rack/recaptcha'
+  
 
 
 # Used for PDF generation

@@ -13,8 +13,6 @@
   require './config/settings'
   # require './config/accounts'
   
-  # use Rack::Recaptcha,  public_key: '6LcOTesSAAAAAAljpeJq5LwNbaAOxO0fXYXlC29b',
-  #                       private_key: '6LcOTesSAAAAAPmDr9Hygp0XQ1ZluVsy1Q0f1eOs'
   
   # helpers Rack::Recaptcha::Helpers
 
