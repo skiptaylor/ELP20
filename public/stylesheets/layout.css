@@ -1,7 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Oswald);
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
 
-HTML {
+html {
 	background-color: #003253;
 	font-family: 'Droid Sans', arial, serif;
 	color: white;
