@@ -26,6 +26,17 @@
   end
   
   configure :production do
+    before do
+      unless request.request_method == 'POST'
+        unless request.url.include? "https://www."
+          redirect "https://www.elpactivities.com#{request.path}"
+        end
+      end
+    end
+  end
+  
+  
+  configure :production do
     error(404) { erb :error, layout: false, locals: { code: '404', message: 'Not Found'             } }
     error(400) { erb :error, layout: false, locals: { code: '400', message: 'Bad Request'           } }
     error(401) { erb :error, layout: false, locals: { code: '401', message: 'Unauthorized'          } }
