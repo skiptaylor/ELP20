@@ -18,7 +18,7 @@
 	<a href="/users/<%= session[:user] %>/reports" <%= active 'reports' %>>Activities</a>
 	<% unless request.url.include? 'http://okelp.com' %>
 		<a href="/forum/instructions" <%= active 'forum' %>>Forum</a>
-		<a href="/downloads" <%= active 'downloads' %>>Downloads</a>
+		<!-- <a href="/downloads" <%= active 'downloads' %>>Downloads</a> -->
 	<% end %>
 	<a href="/profile" <%= active 'profile' %>>Profile</a>
 <% end %>
